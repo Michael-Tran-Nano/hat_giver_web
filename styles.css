@@ -1,0 +1,37 @@
+#image-container {
+    position: relative;
+    width: 320px;
+    height: 176px;
+    border: 1px solid #ccc;
+}
+.stacked-image {
+    position: absolute;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+#list-container {
+    max-height: 400px; /* Set a max height for the scrollable area */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid #ddd; /* Optional: add a border */
+    padding: 10px; /* Optional: add padding */
+    width: 300px; /* Optional: set a width */
+}
+.list-item {
+    display: flex;
+    align-items: center; /* Align items vertically centered */
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    justify-content: space-between; /* Space out items horizontally */
+}
+.item-name {
+    margin-right: 10px; /* Space between name and image */
+}
+
+.item-image {
+    object-fit: contain; /* Maintain aspect ratio and cover space */
+}
