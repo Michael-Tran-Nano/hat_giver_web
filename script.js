@@ -4,6 +4,10 @@ let commands = {
 	belly: 0,
 };
 
+let targetColor = { r: 255, g: 0, b: 0 }; // { r: 170, g: 170, b: 255 };
+const white = { r: 255, g: 255, b: 255 };
+const shadowWhite = { r: 178, g: 178, b: 178 };
+
 let animal = "dog";
 
 let base_coor_dict = {
@@ -25,6 +29,7 @@ let data;
 document.addEventListener("DOMContentLoaded", async function () {
 	data = await getHatList();
 	populateList(data);
+	makeImageBase();
 	makeImage();
 });
 
@@ -83,12 +88,17 @@ function populateList(data) {
 	});
 }
 
-function makeImage() {
+function makeImageBase() {
+	const container = document.getElementById("image-container");
+	const img = document.createElement("img");
+	img.src = `images/base.png`;
+	img.classList.add("stacked-image");
+	container.appendChild(img);
+}
+
+async function makeImage() {
 	const [base_x, base_y] = base_coor_dict[animal];
-	const images = [
-		{ src: `images/base.png`, x: -base_x, y: -base_y },
-		{ src: `images/${animal}.png`, x: 0, y: 0 },
-	];
+	const images = [{ src: `images/${animal}.png`, x: 0, y: 0, animal: true }];
 
 	for (const [placement, id] of Object.entries(commands)) {
 		if (id == 0) {
@@ -100,20 +110,88 @@ function makeImage() {
 			src: `https://hundeparken.net/h5/game/gfx/item/${imageNo}.png`,
 			x: data[id]["x"] + animal_x,
 			y: data[id]["y"] + animal_y,
+			animal: false,
 		});
 	}
 
 	const container = document.getElementById("image-container");
-	container.innerHTML = "";
+	// Keep background
+	const firstChild = container.firstElementChild;
+	while (container.lastElementChild !== firstChild) {
+		container.removeChild(container.lastElementChild);
+	}
 
-	images.forEach(({ src, x, y }) => {
-		const img = document.createElement("img");
+	const processedImages = await Promise.all(
+		images.map(({ src, x, y, animal }) => {
+			if (animal && !Object.values(targetColor).every((value) => value === 0)) {
+				return recolorAnimal(src, targetColor).then((newImg) => {
+					newImg.classList.add("stacked-image");
+					newImg.style.left = `${x + base_x}px`;
+					newImg.style.top = `${y + base_y}px`;
+					return newImg;
+				});
+			} else {
+				const img = document.createElement("img");
+				img.src = src;
+				img.classList.add("stacked-image");
+				img.style.left = `${x + base_x}px`;
+				img.style.top = `${y + base_y}px`;
+				return img;
+			}
+		})
+	);
+
+	processedImages.forEach((img) => container.appendChild(img));
+}
+
+function recolorAnimal(src, targetColor) {
+	return new Promise((resolve) => {
+		const img = new Image();
+		img.crossOrigin = "Anonymous";
 		img.src = src;
-		img.classList.add("stacked-image");
-		img.style.left = `${x + base_x}px`;
-		img.style.top = `${y + base_y}px`;
-		container.appendChild(img);
+		img.onload = () => {
+			const canvas = document.createElement("canvas");
+			const ctx = canvas.getContext("2d");
+			canvas.width = img.width;
+			canvas.height = img.height;
+			ctx.drawImage(img, 0, 0);
+
+			const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+			const data = imageData.data;
+
+			// When you define the color, this shadow should be defined as well
+			const targetColorShadow = {
+				r: Math.ceil(targetColor.r * 0.7) - 1,
+				g: Math.ceil(targetColor.g * 0.7) - 1,
+				b: Math.ceil(targetColor.b * 0.7) - 1,
+			};
+
+			// 4th is alpha
+			for (let i = 0; i < data.length; i += 4) {
+				const pixel = data.subarray(i, i + 4);
+				if (isColor(pixel, white)) {
+					setColor(pixel, targetColor);
+				} else if (isColor(pixel, shadowWhite)) {
+					setColor(pixel, targetColorShadow);
+				}
+			}
+
+			ctx.putImageData(imageData, 0, 0);
+			const newImg = new Image();
+			newImg.src = canvas.toDataURL();
+			resolve(newImg);
+		};
 	});
+}
+
+function isColor(pixel, color) {
+	return pixel[0] === color.r && pixel[1] === color.g && pixel[2] === color.b;
+}
+
+function setColor(pixel, color) {
+	pixel[0] = color.r;
+	pixel[1] = color.g;
+	pixel[2] = color.b;
 }
 
 function handleClick(id) {

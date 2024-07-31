@@ -1,0 +1,7 @@
+Some things does not work when opened locally due to CORS policy.
+
+How to test locally:
+
+Use terminal window and go to the relevant directory:
+write: python -m http.server 8000
+open: http://localhost:8000/
