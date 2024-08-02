@@ -1,7 +1,7 @@
 let currentHats = {
 	head: 0,
-	mouth: 0,
 	belly: 0,
+	mouth: 0,
 };
 
 let targetColor = { r: 0, g: 0, b: 0 }; // { r: 170, g: 170, b: 255 };
@@ -19,8 +19,8 @@ let base_coor_dict = {
 
 let body_coor_dicts = {
 	head: { dog: [11, 1], wolf: [12, 5], cat: [8, 6], bear: [13, 1] },
-	mouth: { dog: [3, 5], wolf: [3, 11], cat: [2, 12], bear: [2, 10] },
 	belly: { dog: [23, 4], wolf: [25, 10], cat: [19, 9], bear: [27, 2] },
+	mouth: { dog: [3, 5], wolf: [3, 11], cat: [2, 12], bear: [2, 10] },
 	dildo: { dog: [40, 15], wolf: [40, 26], cat: [31, 18], bear: [47, 16] },
 };
 
@@ -30,6 +30,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 	data = await getHatList();
 	populateList(data);
 	defineImages();
+
+	const searchBar = document.getElementById("search-bar");
+	searchBar.addEventListener("input", handleSearch);
+
+	const colorInput = document.getElementById("animal-color");
+	colorInput.addEventListener("input", (event) => {
+		const hexColor = event.target.value;
+		targetColor = hexToRgb(hexColor);
+		changeAnimalColor();
+	});
 });
 
 async function getHatList() {
@@ -51,6 +61,7 @@ async function getHatList() {
 // Function to create the list items
 function populateList(data) {
 	const container = document.getElementById("list-container");
+	container.innerHTML = "";
 
 	const itemsArray = Object.keys(data).map((key) => ({
 		key: key,
@@ -95,6 +106,20 @@ function populateList(data) {
 	});
 }
 
+function handleSearch(event) {
+	const searchQuery = event.target.value.toLowerCase();
+	const listItems = document.querySelectorAll(".list-item");
+
+	listItems.forEach((item) => {
+		const name = item.querySelector(".item-name").textContent.toLowerCase();
+		if (name.includes(searchQuery)) {
+			item.style.display = "flex";
+		} else {
+			item.style.display = "none";
+		}
+	});
+}
+
 function defineImages() {
 	const container = document.getElementById("image-container");
 
@@ -104,8 +129,8 @@ function defineImages() {
 		{ src: `images/base.png`, x: 0, y: 0, id: "background" },
 		{ src: `images/${animal}.png`, x: base_x, y: base_y, id: "animal" },
 		{ src: "", x: 0, y: 0, id: "head" },
-		{ src: "", x: 0, y: 0, id: "mouth" },
 		{ src: "", x: 0, y: 0, id: "belly" },
+		{ src: "", x: 0, y: 0, id: "mouth" },
 	];
 
 	images.map(({ src, x, y, id }) => {
@@ -158,14 +183,6 @@ async function changeAnimalImage() {
 		}
 	}
 }
-
-const colorInput = document.getElementById("animal-color");
-
-colorInput.addEventListener("input", (event) => {
-	const hexColor = event.target.value;
-	targetColor = hexToRgb(hexColor);
-	changeAnimalColor();
-});
 
 function hexToRgb(hex) {
 	hex = hex.replace(/^#/, "");
@@ -272,10 +289,20 @@ function changeAnimal(newAnimal) {
 	changeAnimalImage();
 }
 
+function clearHat(placement) {
+	const id = currentHats[placement];
+	if (id != 0) {
+		const element = document.getElementById(`${id}`);
+		element.style.backgroundColor = "";
+		currentHats[placement] = 0;
+		changeHatImage(placement);
+	}
+}
+
 function clearHats() {
 	for (const [placement, id] of Object.entries(currentHats)) {
 		if (id != 0) {
-			let element = document.getElementById(`${id}`);
+			const element = document.getElementById(`${id}`);
 			element.style.backgroundColor = "";
 			currentHats[placement] = 0;
 			changeHatImage(placement);

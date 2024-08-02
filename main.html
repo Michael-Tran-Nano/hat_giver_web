@@ -12,9 +12,15 @@
     <button onclick="changeAnimal('cat')">Cat</button>
     <button onclick="changeAnimal('wolf')">Wolf</button>
     <button onclick="changeAnimal('bear')">Bear</button>
-    <button onclick="clearHats()">Clear</button>
     <label for="animal-color">Color:</label>
     <input type="color" id="animal-color" value="#ffffff">
+    <div>
+        <button onclick="clearHat('head')">Clear head</button>
+        <button onclick="clearHat('belly')">Clear belly</button>
+        <button onclick="clearHat('mouth')">Clear mouth</button>
+        <button onclick="clearHats()">Clear all</button>
+    </div>
+    <div><input type="text" id="search-bar" placeholder="Search hat by name..."></div>
     <div id="list-container"></div>
     <script src="script.js"></script>
 </body>
