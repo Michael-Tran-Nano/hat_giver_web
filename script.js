@@ -4,6 +4,15 @@ let currentHats = {
 	mouth: 0,
 };
 
+let headAnimation = null;
+let bellyAnimation = null;
+let mouthAnimation = null;
+let animations = {
+	head: headAnimation,
+	belly: bellyAnimation,
+	mouth: mouthAnimation,
+};
+
 let targetColor = { r: 0, g: 0, b: 0 }; // { r: 170, g: 170, b: 255 };
 const white = { r: 255, g: 255, b: 255 };
 const shadowWhite = { r: 178, g: 178, b: 178 };
@@ -148,16 +157,49 @@ function changeHatImage(placement) {
 	const hatImg = document.getElementById(placement);
 	hatId = currentHats[placement];
 	hatInfo = data[hatId];
+
+	// Remove animation for placement if exist
+	stopImageChange(placement);
+
 	if (hatId == 0) {
 		hatImg.src = "";
 	} else {
 		const [base_x, base_y] = base_coor_dict[animal];
 		const [body_x, body_y] = body_coor_dicts[placement][animal];
 		const [hat_x, hat_y] = [hatInfo["x"], hatInfo["y"]];
-		const imageNo = hatInfo["g"].split(",")[0];
 		hatImg.style.left = `${base_x + body_x + hat_x}px`;
 		hatImg.style.top = `${base_y + body_y + hat_y}px`;
+		const images = hatInfo["g"].split(",");
+		const imageNo = images[0];
 		hatImg.src = `https://hundeparken.net/h5/game/gfx/item/${imageNo}.png`;
+
+		if (images.length > 1) {
+			const rate = hatInfo["a"];
+			const duration = 10000 / rate;
+			startImageChange(placement, images, duration);
+		}
+	}
+}
+
+function startImageChange(placement, images, duration) {
+	const makeSrc = (imageNo) =>
+		`https://hundeparken.net/h5/game/gfx/item/${imageNo}.png`;
+
+	const srcs = images.map(makeSrc);
+
+	let currentImageIndex = 0;
+	const animalImageElement = document.getElementById(placement);
+
+	animations[placement] = setInterval(() => {
+		currentImageIndex = (currentImageIndex + 1) % srcs.length;
+		animalImageElement.src = srcs[currentImageIndex];
+	}, duration);
+}
+
+function stopImageChange(placement) {
+	if (animations[placement]) {
+		clearInterval(animations[placement]);
+		animations[placement] = null;
 	}
 }
 
@@ -299,13 +341,9 @@ function clearHat(placement) {
 	}
 }
 
+// Use the clearHat(placement) in this one
 function clearHats() {
-	for (const [placement, id] of Object.entries(currentHats)) {
-		if (id != 0) {
-			const element = document.getElementById(`${id}`);
-			element.style.backgroundColor = "";
-			currentHats[placement] = 0;
-			changeHatImage(placement);
-		}
+	for (let placement in currentHats) {
+		clearHat(placement);
 	}
 }
