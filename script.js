@@ -1,3 +1,10 @@
+import * as helper from "./helpers.js";
+import * as constant from "./constants.js";
+
+window.changeAnimal = changeAnimal;
+window.clearHat = clearHat;
+window.clearHats = clearHats;
+
 let currentHats = {
 	head: 0,
 	belly: 0,
@@ -13,30 +20,14 @@ let animations = {
 	mouth: mouthAnimation,
 };
 
-let targetColor = { r: 0, g: 0, b: 0 }; // { r: 170, g: 170, b: 255 };
-const white = { r: 255, g: 255, b: 255 };
-const shadowWhite = { r: 178, g: 178, b: 178 };
+let targetColor = { r: 0, g: 0, b: 0 };
 
 let animal = "dog";
-
-let base_coor_dict = {
-	dog: [141, 71],
-	wolf: [139, 66],
-	cat: [145, 69],
-	bear: [137, 70],
-};
-
-let body_coor_dicts = {
-	head: { dog: [11, 1], wolf: [12, 5], cat: [8, 6], bear: [13, 1] },
-	belly: { dog: [23, 4], wolf: [25, 10], cat: [19, 9], bear: [27, 2] },
-	mouth: { dog: [3, 5], wolf: [3, 11], cat: [2, 12], bear: [2, 10] },
-	dildo: { dog: [40, 15], wolf: [40, 26], cat: [31, 18], bear: [47, 16] },
-};
 
 let data;
 
 document.addEventListener("DOMContentLoaded", async function () {
-	data = await getHatList();
+	data = await helper.getHatData();
 	populateList(data);
 	defineImages();
 
@@ -46,28 +37,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 	const colorInput = document.getElementById("animal-color");
 	colorInput.addEventListener("input", (event) => {
 		const hexColor = event.target.value;
-		targetColor = hexToRgb(hexColor);
+		targetColor = helper.hexToRgb(hexColor);
 		changeAnimalColor();
 	});
 });
 
-async function getHatList() {
-	try {
-		const response = await fetch("https://hundeparken.net/api/items");
-		const dataRaw = await response.json();
-		const data = dataRaw.reduce((acc, item) => {
-			const { id, ...rest } = item;
-			acc[id] = rest;
-			return acc;
-		}, {});
-		return data;
-	} catch (error) {
-		console.error("Error fetching or processing data:", error);
-		return [];
-	}
-}
-
-// Function to create the list items
 function populateList(data) {
 	const container = document.getElementById("list-container");
 	container.innerHTML = "";
@@ -92,7 +66,7 @@ function populateList(data) {
 		// Type icon
 		const placement = getPlacementFromNumber(item.u);
 		const leftImage = document.createElement("img");
-		leftImage.src = `images/${placement}.png`; // Specify the path to the left image
+		leftImage.src = `images/${placement}.png`;
 		leftImage.alt = `${item.n} left image`;
 		leftImage.className = "left-image";
 
@@ -103,7 +77,7 @@ function populateList(data) {
 
 		// Image
 		const image = document.createElement("img");
-		let imageNo = item.g.split(",")[0]; // Take first frame of animated hats
+		let imageNo = item.g.split(",")[0];
 		image.src = `https://hundeparken.net/h5/game/gfx/item/${imageNo}.png`;
 		image.alt = `${item.n} image`;
 		image.className = "item-image";
@@ -132,7 +106,7 @@ function handleSearch(event) {
 function defineImages() {
 	const container = document.getElementById("image-container");
 
-	const [base_x, base_y] = base_coor_dict[animal];
+	const [base_x, base_y] = constant.baseCoorDict[animal];
 
 	const images = [
 		{ src: `images/base.png`, x: 0, y: 0, id: "background" },
@@ -155,8 +129,8 @@ function defineImages() {
 
 function changeHatImage(placement) {
 	const hatImg = document.getElementById(placement);
-	hatId = currentHats[placement];
-	hatInfo = data[hatId];
+	const hatId = currentHats[placement];
+	const hatInfo = data[hatId];
 
 	// Remove animation for placement if exist
 	stopImageChange(placement);
@@ -164,8 +138,8 @@ function changeHatImage(placement) {
 	if (hatId == 0) {
 		hatImg.src = "";
 	} else {
-		const [base_x, base_y] = base_coor_dict[animal];
-		const [body_x, body_y] = body_coor_dicts[placement][animal];
+		const [base_x, base_y] = constant.baseCoorDict[animal];
+		const [body_x, body_y] = constant.bodyCoorDicts[placement][animal];
 		const [hat_x, hat_y] = [hatInfo["x"], hatInfo["y"]];
 		hatImg.style.left = `${base_x + body_x + hat_x}px`;
 		hatImg.style.top = `${base_y + body_y + hat_y}px`;
@@ -203,6 +177,11 @@ function stopImageChange(placement) {
 	}
 }
 
+function changeAnimal(newAnimal) {
+	animal = newAnimal;
+	changeAnimalImage();
+}
+
 async function changeAnimalImage() {
 	const animalImg = document.getElementById("animal");
 
@@ -216,7 +195,7 @@ async function changeAnimalImage() {
 		animalImg.src = recoloredImage.src;
 	}
 
-	const [x, y] = base_coor_dict[animal];
+	const [x, y] = constant.baseCoorDict[animal];
 	animalImg.style.left = `${x}px`;
 	animalImg.style.top = `${y}px`;
 	for (const [placement, id] of Object.entries(currentHats)) {
@@ -224,15 +203,6 @@ async function changeAnimalImage() {
 			changeHatImage(placement);
 		}
 	}
-}
-
-function hexToRgb(hex) {
-	hex = hex.replace(/^#/, "");
-	let bigint = parseInt(hex, 16);
-	let r = (bigint >> 16) & 255;
-	let g = (bigint >> 8) & 255;
-	let b = bigint & 255;
-	return { r: r, g: g, b: b };
 }
 
 async function changeAnimalColor() {
@@ -260,19 +230,15 @@ function recolorAnimalImage(src, targetColor) {
 			const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 			const data = imageData.data;
 
-			const targetColorShadow = {
-				r: Math.ceil(targetColor.r * 0.7) - 1,
-				g: Math.ceil(targetColor.g * 0.7) - 1,
-				b: Math.ceil(targetColor.b * 0.7) - 1,
-			};
+			const targetColorShadow = helper.getShadow(targetColor);
 
 			// 4th is alpha
 			for (let i = 0; i < data.length; i += 4) {
 				const pixel = data.subarray(i, i + 4);
-				if (isColor(pixel, white)) {
-					setColor(pixel, targetColor);
-				} else if (isColor(pixel, shadowWhite)) {
-					setColor(pixel, targetColorShadow);
+				if (helper.isColor(pixel, constant.white)) {
+					helper.setColor(pixel, targetColor);
+				} else if (helper.isColor(pixel, constant.shadowWhite)) {
+					helper.setColor(pixel, targetColorShadow);
 				}
 			}
 
@@ -284,16 +250,6 @@ function recolorAnimalImage(src, targetColor) {
 	});
 }
 
-function isColor(pixel, color) {
-	return pixel[0] === color.r && pixel[1] === color.g && pixel[2] === color.b;
-}
-
-function setColor(pixel, color) {
-	pixel[0] = color.r;
-	pixel[1] = color.g;
-	pixel[2] = color.b;
-}
-
 function handleClick(id) {
 	const hat = data[id];
 	const placement = getPlacementFromNumber(hat.u);
@@ -303,20 +259,19 @@ function handleClick(id) {
 	if (currentHats[placement] == 0) {
 		currentHats[placement] = id;
 		element.style.backgroundColor = "yellow";
-	} else if (currentHats[placement] != id) {
+	} else if (currentHats[placement] == id) {
+		currentHats[placement] = 0;
+		element.style.backgroundColor = "";
+	} else {
 		let elementOld = document.getElementById(currentHats[placement]);
 		elementOld.style.backgroundColor = "";
 		currentHats[placement] = id;
 		element.style.backgroundColor = "yellow";
-	} else {
-		currentHats[placement] = 0;
-		element.style.backgroundColor = "";
 	}
 
 	changeHatImage(placement);
 }
 
-// Todo: add dildo
 function getPlacementFromNumber(u) {
 	if (u == "1") {
 		return "head";
@@ -324,11 +279,6 @@ function getPlacementFromNumber(u) {
 		return "mouth";
 	}
 	return "belly";
-}
-
-function changeAnimal(newAnimal) {
-	animal = newAnimal;
-	changeAnimalImage();
 }
 
 function clearHat(placement) {
@@ -341,7 +291,6 @@ function clearHat(placement) {
 	}
 }
 
-// Use the clearHat(placement) in this one
 function clearHats() {
 	for (let placement in currentHats) {
 		clearHat(placement);
