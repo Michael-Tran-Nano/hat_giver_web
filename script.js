@@ -69,6 +69,13 @@ function populateList(data) {
 		listItem.addEventListener("click", () => handleClick(item.key));
 		listItem.id = item.key;
 
+		// Type icon
+		const placement = getPlacementFromNumber(item.u);
+		const leftImage = document.createElement("img");
+		leftImage.src = `images/${placement}.png`; // Specify the path to the left image
+		leftImage.alt = `${item.n} left image`;
+		leftImage.className = "left-image";
+
 		// Name
 		const nameSpan = document.createElement("span");
 		nameSpan.textContent = item.n;
@@ -81,6 +88,7 @@ function populateList(data) {
 		image.alt = `${item.n} image`;
 		image.className = "item-image";
 
+		listItem.appendChild(leftImage);
 		listItem.appendChild(nameSpan);
 		listItem.appendChild(image);
 		container.appendChild(listItem);
@@ -229,19 +237,9 @@ function setColor(pixel, color) {
 
 function handleClick(id) {
 	const hat = data[id];
-	let placement;
-	switch (hat.u) {
-		case "1":
-			placement = "head";
-			break;
-		case "2":
-			placement = "mouth";
-			break;
-		default: // todo: add dildo
-			placement = "belly";
-	}
+	const placement = getPlacementFromNumber(hat.u);
 
-	let element = document.getElementById(id);
+	const element = document.getElementById(id);
 
 	if (currentHats[placement] == 0) {
 		currentHats[placement] = id;
@@ -257,6 +255,16 @@ function handleClick(id) {
 	}
 
 	changeHatImage(placement);
+}
+
+// Todo: add dildo
+function getPlacementFromNumber(u) {
+	if (u == "1") {
+		return "head";
+	} else if (u == "2") {
+		return "mouth";
+	}
+	return "belly";
 }
 
 function changeAnimal(newAnimal) {
