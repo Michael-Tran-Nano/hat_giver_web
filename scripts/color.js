@@ -2,11 +2,38 @@ import * as constant from "./constant.js";
 
 export function hexToRgb(hex) {
 	hex = hex.replace(/^#/, "");
+
+	if (hex.length !== 6 || !/^[0-9A-Fa-f]{6}$/.test(hex)) {
+		return null;
+	}
+
 	let bigint = parseInt(hex, 16);
 	let r = (bigint >> 16) & 255;
 	let g = (bigint >> 8) & 255;
 	let b = bigint & 255;
+
 	return { r: r, g: g, b: b };
+}
+
+export function rgbToHex({ r, g, b }) {
+	if (
+		typeof r !== "number" ||
+		r < 0 ||
+		r > 255 ||
+		typeof g !== "number" ||
+		g < 0 ||
+		g > 255 ||
+		typeof b !== "number" ||
+		b < 0 ||
+		b > 255
+	) {
+		return null;
+	}
+
+	return (
+		"#" +
+		((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()
+	);
 }
 
 export function isColor(pixel, color) {

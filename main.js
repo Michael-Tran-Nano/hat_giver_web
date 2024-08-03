@@ -38,11 +38,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 	searchBar.addEventListener("input", handleSearch);
 
 	const colorInput = document.getElementById("animal-color");
-	colorInput.addEventListener("input", (event) => {
-		const hexColor = event.target.value;
-		targetColor = color.hexToRgb(hexColor);
-		changeAnimalColor();
-	});
+	colorInput.addEventListener("input", changeAnimalColorFromPalette);
+
+	const hexText = document.getElementById("hex-text");
+	hexText.addEventListener("input", changeAnimalColorFromBar);
 });
 
 function populateList(data) {
@@ -194,6 +193,31 @@ async function changeAnimalColor() {
 		targetColor
 	);
 	animalImg.src = recoloredImage.src;
+}
+
+function changeAnimalColorFromPalette(event) {
+	const hexColor = event.target.value;
+	targetColor = color.hexToRgb(hexColor);
+	changeAnimalColor();
+
+	const hexText = document.getElementById("hex-text");
+	hexText.value = hexColor;
+}
+
+function changeAnimalColorFromBar(event) {
+	const hexColor = event.target.value;
+	const newColor = color.hexToRgb(hexColor);
+
+	const hexText = document.getElementById("hex-text");
+	const colorInput = document.getElementById("animal-color");
+	if (newColor !== null) {
+		targetColor = newColor;
+		changeAnimalColor();
+		colorInput.value = color.rgbToHex(targetColor);
+		hexText.style.color = "";
+	} else {
+		hexText.style.color = "red";
+	}
 }
 
 function handleClick(id) {
