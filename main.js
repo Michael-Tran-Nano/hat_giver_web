@@ -169,10 +169,11 @@ async function changeAnimalImage() {
 	if (Object.values(targetColor).every((value) => value === 0)) {
 		animalImg.src = `images/${animal}.png`;
 	} else {
-		animalImg.src = await color.recolorAnimalImage(
+		const recoloredImage = await color.recolorAnimalImage(
 			`images/${animal}.png`,
 			targetColor
 		);
+		animalImg.src = recoloredImage.src;
 	}
 
 	const [x, y] = constant.baseCoorDict[animal];
@@ -188,10 +189,11 @@ async function changeAnimalImage() {
 async function changeAnimalColor() {
 	const animalImg = document.getElementById("animal");
 
-	animalImg.src = await color.recolorAnimalImage(
+	const recoloredImage = await color.recolorAnimalImage(
 		`images/${animal}.png`,
 		targetColor
 	);
+	animalImg.src = recoloredImage.src;
 }
 
 function handleClick(id) {
