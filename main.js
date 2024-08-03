@@ -1,5 +1,8 @@
-import * as helper from "./helpers.js";
-import * as constant from "./constants.js";
+import * as color from "./scripts/color.js";
+import * as constant from "./scripts/constant.js";
+import * as setup from "./scripts/setup.js";
+import * as path from "./scripts/path.js";
+import * as animation from "./scripts/animation.js";
 
 window.changeAnimal = changeAnimal;
 window.clearHat = clearHat;
@@ -14,7 +17,7 @@ let currentHats = {
 let headAnimation = null;
 let bellyAnimation = null;
 let mouthAnimation = null;
-let animations = {
+let animationHolder = {
 	head: headAnimation,
 	belly: bellyAnimation,
 	mouth: mouthAnimation,
@@ -27,7 +30,7 @@ let animal = "dog";
 let data;
 
 document.addEventListener("DOMContentLoaded", async function () {
-	data = await helper.getHatData();
+	data = await setup.getHatData();
 	populateList(data);
 	defineImages();
 
@@ -37,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 	const colorInput = document.getElementById("animal-color");
 	colorInput.addEventListener("input", (event) => {
 		const hexColor = event.target.value;
-		targetColor = helper.hexToRgb(hexColor);
+		targetColor = color.hexToRgb(hexColor);
 		changeAnimalColor();
 	});
 });
@@ -78,7 +81,7 @@ function populateList(data) {
 		// Image
 		const image = document.createElement("img");
 		let imageNo = item.g.split(",")[0];
-		image.src = `https://hundeparken.net/h5/game/gfx/item/${imageNo}.png`;
+		image.src = path.getHatImage(imageNo);
 		image.alt = `${item.n} image`;
 		image.className = "item-image";
 
@@ -133,7 +136,7 @@ function changeHatImage(placement) {
 	const hatInfo = data[hatId];
 
 	// Remove animation for placement if exist
-	stopImageChange(placement);
+	animation.stopImageChange(placement, animationHolder);
 
 	if (hatId == 0) {
 		hatImg.src = "";
@@ -145,35 +148,13 @@ function changeHatImage(placement) {
 		hatImg.style.top = `${base_y + body_y + hat_y}px`;
 		const images = hatInfo["g"].split(",");
 		const imageNo = images[0];
-		hatImg.src = `https://hundeparken.net/h5/game/gfx/item/${imageNo}.png`;
+		hatImg.src = path.getHatImage(imageNo);
 
 		if (images.length > 1) {
 			const rate = hatInfo["a"];
 			const duration = 10000 / rate;
-			startImageChange(placement, images, duration);
+			animation.startImageChange(placement, animationHolder, images, duration);
 		}
-	}
-}
-
-function startImageChange(placement, images, duration) {
-	const makeSrc = (imageNo) =>
-		`https://hundeparken.net/h5/game/gfx/item/${imageNo}.png`;
-
-	const srcs = images.map(makeSrc);
-
-	let currentImageIndex = 0;
-	const animalImageElement = document.getElementById(placement);
-
-	animations[placement] = setInterval(() => {
-		currentImageIndex = (currentImageIndex + 1) % srcs.length;
-		animalImageElement.src = srcs[currentImageIndex];
-	}, duration);
-}
-
-function stopImageChange(placement) {
-	if (animations[placement]) {
-		clearInterval(animations[placement]);
-		animations[placement] = null;
 	}
 }
 
@@ -188,11 +169,10 @@ async function changeAnimalImage() {
 	if (Object.values(targetColor).every((value) => value === 0)) {
 		animalImg.src = `images/${animal}.png`;
 	} else {
-		const recoloredImage = await recolorAnimalImage(
+		animalImg.src = await color.recolorAnimalImage(
 			`images/${animal}.png`,
 			targetColor
 		);
-		animalImg.src = recoloredImage.src;
 	}
 
 	const [x, y] = constant.baseCoorDict[animal];
@@ -208,46 +188,10 @@ async function changeAnimalImage() {
 async function changeAnimalColor() {
 	const animalImg = document.getElementById("animal");
 
-	const recoloredImage = await recolorAnimalImage(
+	animalImg.src = await color.recolorAnimalImage(
 		`images/${animal}.png`,
 		targetColor
 	);
-	animalImg.src = recoloredImage.src;
-}
-
-function recolorAnimalImage(src, targetColor) {
-	return new Promise((resolve) => {
-		const img = new Image();
-		img.crossOrigin = "Anonymous";
-		img.src = src;
-		img.onload = () => {
-			const canvas = document.createElement("canvas");
-			const ctx = canvas.getContext("2d");
-			canvas.width = img.width;
-			canvas.height = img.height;
-			ctx.drawImage(img, 0, 0);
-
-			const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-			const data = imageData.data;
-
-			const targetColorShadow = helper.getShadow(targetColor);
-
-			// 4th is alpha
-			for (let i = 0; i < data.length; i += 4) {
-				const pixel = data.subarray(i, i + 4);
-				if (helper.isColor(pixel, constant.white)) {
-					helper.setColor(pixel, targetColor);
-				} else if (helper.isColor(pixel, constant.shadowWhite)) {
-					helper.setColor(pixel, targetColorShadow);
-				}
-			}
-
-			ctx.putImageData(imageData, 0, 0);
-			const newImg = new Image();
-			newImg.src = canvas.toDataURL();
-			resolve(newImg);
-		};
-	});
 }
 
 function handleClick(id) {
