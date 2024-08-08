@@ -60,11 +60,6 @@ function populateList(data) {
 			return;
 		}
 
-		// Skip newest hats
-		if (item.key > 2199) {
-			return;
-		}
-
 		const listItem = document.createElement("div");
 		listItem.className = "list-item";
 		listItem.addEventListener("click", () => handleClick(item.key));
