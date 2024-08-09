@@ -39,3 +39,7 @@ body {
     object-fit: contain; /* Maintain aspect ratio and cover space */
     margin-left: auto; /* Align the right image to the far right */
 }
+.textbox {
+    max-width: 350px;
+    word-wrap: break-word;
+}
