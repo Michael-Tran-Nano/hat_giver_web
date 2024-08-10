@@ -23,7 +23,7 @@ let animationHolder = {
 	mouth: mouthAnimation,
 };
 
-let targetColor = { r: 0, g: 0, b: 0 };
+let targetColor = { r: 255, g: 255, b: 255 };
 
 let animal = "dog";
 
@@ -165,7 +165,7 @@ function changeAnimal(newAnimal) {
 async function changeAnimalImage() {
 	const animalImg = document.getElementById("animal");
 
-	if (Object.values(targetColor).every((value) => value === 0)) {
+	if (Object.values(targetColor).every((value) => value === 255)) {
 		animalImg.src = `images/${animal}.png`;
 	} else {
 		const recoloredImage = await color.recolorAnimalImage(
