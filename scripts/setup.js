@@ -48,6 +48,36 @@ function addOwnHats(dataRaw) {
 			a: 0,
 			x: -32,
 			y: -29,
+		},
+		{
+			id: -4,
+			n: "Zebrastriber",
+			d: "Tag striper på",
+			u: "0",
+			g: "-7",
+			a: 0,
+			x: -21,
+			y: -6,
+		},
+		{
+			id: -5,
+			n: "Snavs",
+			d: "Beskidt hund",
+			u: "0",
+			g: "-8",
+			a: 0,
+			x: -23,
+			y: -4,
+		},
+		{
+			id: -6,
+			n: "Spraytan",
+			d: "Solbrun året rundt",
+			u: "0",
+			g: "-9",
+			a: 0,
+			x: -21,
+			y: -3,
 		}
 	);
 }
