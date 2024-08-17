@@ -26,7 +26,7 @@ let animationHolder = {
 let targetColor = { r: 255, g: 255, b: 255 };
 
 let animal = "dog";
-
+let skipObjects = true;
 let data;
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -56,7 +56,7 @@ function populateList(data) {
 
 	itemsArray.forEach((item) => {
 		// skip non-hats
-		if (item.u == "11") {
+		if (skipObjects && item.u == "11") {
 			return;
 		}
 
@@ -94,6 +94,15 @@ function populateList(data) {
 function handleSearch(event) {
 	const searchQuery = event.target.value.toLowerCase();
 	const listItems = document.querySelectorAll(".list-item");
+
+	// A litte surprise
+	if (searchQuery == "unlock objects") {
+		skipObjects = false;
+		populateList(data);
+	} else if (searchQuery == "lock objects") {
+		skipObjects = true;
+		populateList(data);
+	}
 
 	listItems.forEach((item) => {
 		const name = item.querySelector(".item-name").textContent.toLowerCase();
