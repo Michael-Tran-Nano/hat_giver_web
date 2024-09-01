@@ -5,6 +5,7 @@ import * as path from "./scripts/path.js";
 import * as animation from "./scripts/animation.js";
 
 window.changeAnimal = changeAnimal;
+window.changeBackground = changeBackground;
 window.clearHat = clearHat;
 window.clearHats = clearHats;
 
@@ -26,6 +27,7 @@ let animationHolder = {
 let targetColor = { r: 255, g: 255, b: 255 };
 
 let animal = "dog";
+let backgroundCount = 0;
 let skipObjects = true;
 let data;
 
@@ -227,6 +229,12 @@ function changeAnimalColorFromBar(event) {
 	} else {
 		hexText.style.color = "red";
 	}
+}
+
+function changeBackground(change) {
+	backgroundCount += change;
+	const background = document.getElementById("background");
+	background.src = path.getBackgroundImage(backgroundCount);
 }
 
 function handleClick(id) {
