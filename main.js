@@ -18,6 +18,8 @@ let currentHats = {
 let offset = {
 	x: 0,
 	y: 0,
+	animal_ref_x: constant.baseCoorDict.dog[0],
+	animal_ref_y: constant.baseCoorDict.dog[1],
 };
 
 let headAnimation = null;
@@ -161,8 +163,8 @@ function changeHatImage(placement) {
 		const [base_x, base_y] = constant.baseCoorDict[animal];
 		const [body_x, body_y] = constant.bodyCoorDicts[placement][animal];
 		const [hat_x, hat_y] = [hatInfo["x"], hatInfo["y"]];
-		hatImg.style.left = `${base_x + body_x + hat_x + offset["x"]}px`;
-		hatImg.style.top = `${base_y + body_y + hat_y + offset["y"]}px`;
+		hatImg.style.left = `${base_x + body_x + hat_x + offset.x}px`;
+		hatImg.style.top = `${base_y + body_y + hat_y + offset.y}px`;
 		const images = hatInfo["g"].split(",");
 		const imageNo = images[0];
 		hatImg.src = path.getHatImage(imageNo);
@@ -196,8 +198,10 @@ async function changeAnimalImage() {
 	const [x, y] = constant.baseCoorDict[animal];
 	animalImg.style.left = `${x}px`;
 	animalImg.style.top = `${y}px`;
-	offset["x"] = 0;
-	offset["y"] = 0;
+	offset.x = 0;
+	offset.y = 0;
+	offset.animal_ref_x = x;
+	offset.animal_ref_y = y;
 	for (const [placement, id] of Object.entries(currentHats)) {
 		if (id != 0) {
 			changeHatImage(placement);

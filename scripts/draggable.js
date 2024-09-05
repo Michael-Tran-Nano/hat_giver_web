@@ -5,8 +5,6 @@ export function makeDragAble(offset) {
 	const belly = document.getElementById("belly");
 	const mouth = document.getElementById("mouth");
 
-	let start_x, start_y;
-	let end_x, end_y;
 	let offset_ani_x, offset_ani_y;
 	let offset_head_x, offset_head_y;
 	let offset_belly_x, offset_belly_y;
@@ -17,8 +15,6 @@ export function makeDragAble(offset) {
 		isDragging = true;
 		draggable.style.cursor = "grabbing";
 
-		start_x = event.clientX;
-		start_y = event.clientY;
 		offset_ani_x = event.clientX - draggable.offsetLeft;
 		offset_ani_y = event.clientY - draggable.offsetTop;
 		offset_head_x = event.clientX - head.offsetLeft;
@@ -43,15 +39,13 @@ export function makeDragAble(offset) {
 			belly.style.top = event.clientY - offset_belly_y + "px";
 			mouth.style.left = event.clientX - offset_mouth_x + "px";
 			mouth.style.top = event.clientY - offset_mouth_y + "px";
-			end_x = event.clientX;
-			end_y = event.clientY;
 		}
 	}
 
 	function onMouseUp() {
 		// TODO: add reset position button
-		offset["x"] += end_x - start_x;
-		offset["y"] += end_y - start_y;
+		offset.x = draggable.offsetLeft - offset.animal_ref_x;
+		offset.y = draggable.offsetTop - offset.animal_ref_y;
 		isDragging = false;
 		draggable.style.cursor = "grab";
 
