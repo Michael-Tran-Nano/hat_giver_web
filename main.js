@@ -3,6 +3,7 @@ import * as constant from "./scripts/constant.js";
 import * as setup from "./scripts/setup.js";
 import * as path from "./scripts/path.js";
 import * as animation from "./scripts/animation.js";
+import * as draggable from "./scripts/draggable.js";
 
 window.changeAnimal = changeAnimal;
 window.changeBackground = changeBackground;
@@ -13,6 +14,10 @@ let currentHats = {
 	head: 0,
 	belly: 0,
 	mouth: 0,
+};
+let offset = {
+	x: 0,
+	y: 0,
 };
 
 let headAnimation = null;
@@ -138,6 +143,8 @@ function defineImages() {
 		img.style.top = `${y}px`;
 		container.appendChild(img);
 	});
+
+	draggable.makeDragAble(offset);
 }
 
 function changeHatImage(placement) {
@@ -154,8 +161,8 @@ function changeHatImage(placement) {
 		const [base_x, base_y] = constant.baseCoorDict[animal];
 		const [body_x, body_y] = constant.bodyCoorDicts[placement][animal];
 		const [hat_x, hat_y] = [hatInfo["x"], hatInfo["y"]];
-		hatImg.style.left = `${base_x + body_x + hat_x}px`;
-		hatImg.style.top = `${base_y + body_y + hat_y}px`;
+		hatImg.style.left = `${base_x + body_x + hat_x + offset["x"]}px`;
+		hatImg.style.top = `${base_y + body_y + hat_y + offset["y"]}px`;
 		const images = hatInfo["g"].split(",");
 		const imageNo = images[0];
 		hatImg.src = path.getHatImage(imageNo);
@@ -189,6 +196,8 @@ async function changeAnimalImage() {
 	const [x, y] = constant.baseCoorDict[animal];
 	animalImg.style.left = `${x}px`;
 	animalImg.style.top = `${y}px`;
+	offset["x"] = 0;
+	offset["y"] = 0;
 	for (const [placement, id] of Object.entries(currentHats)) {
 		if (id != 0) {
 			changeHatImage(placement);
