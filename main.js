@@ -3,7 +3,7 @@ import * as constant from "./scripts/constant.js";
 import * as setup from "./scripts/setup.js";
 import * as path from "./scripts/path.js";
 import * as animation from "./scripts/animation.js";
-import * as draggable from "./scripts/draggable.js";
+import * as list from "./scripts/list.js";
 
 window.changeAnimal = changeAnimal;
 window.changeBackground = changeBackground;
@@ -41,8 +41,8 @@ let data;
 
 document.addEventListener("DOMContentLoaded", async function () {
 	data = await setup.getHatData();
-	populateList(data);
-	defineImages();
+	list.populateList(data, handleClick, skipObjects);
+	setup.defineImages(offset);
 
 	const searchBar = document.getElementById("search-bar");
 	searchBar.addEventListener("input", handleSearch);
@@ -54,53 +54,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 	hexText.addEventListener("input", changeAnimalColorFromBar);
 });
 
-function populateList(data) {
-	const container = document.getElementById("list-container");
-	container.innerHTML = "";
-
-	const itemsArray = Object.keys(data).map((key) => ({
-		key: key,
-		...data[key],
-	}));
-	itemsArray.sort((a, b) => a.n.localeCompare(b.n));
-
-	itemsArray.forEach((item) => {
-		// skip non-hats
-		if (skipObjects && item.u == "11") {
-			return;
-		}
-
-		const listItem = document.createElement("div");
-		listItem.className = "list-item";
-		listItem.addEventListener("click", () => handleClick(item.key));
-		listItem.id = item.key;
-
-		// Type icon
-		const placement = getPlacementFromNumber(item.u);
-		const leftImage = document.createElement("img");
-		leftImage.src = `images/${placement}.png`;
-		leftImage.alt = `${item.n} left image`;
-		leftImage.className = "left-image";
-
-		// Name
-		const nameSpan = document.createElement("span");
-		nameSpan.textContent = item.n;
-		nameSpan.className = "item-name";
-
-		// Image
-		const image = document.createElement("img");
-		let imageNo = item.g.split(",")[0];
-		image.src = path.getHatImage(imageNo);
-		image.alt = `${item.n} image`;
-		image.className = "item-image";
-
-		listItem.appendChild(leftImage);
-		listItem.appendChild(nameSpan);
-		listItem.appendChild(image);
-		container.appendChild(listItem);
-	});
-}
-
 function handleSearch(event) {
 	const searchQuery = event.target.value.toLowerCase();
 	const listItems = document.querySelectorAll(".list-item");
@@ -108,10 +61,10 @@ function handleSearch(event) {
 	// A litte surprise
 	if (searchQuery == "unlock objects") {
 		skipObjects = false;
-		populateList(data);
+		list.populateList(data, handleClick, skipObjects);
 	} else if (searchQuery == "lock objects") {
 		skipObjects = true;
-		populateList(data);
+		list.populateList(data, handleClick, skipObjects);
 	}
 
 	listItems.forEach((item) => {
@@ -122,32 +75,6 @@ function handleSearch(event) {
 			item.style.display = "none";
 		}
 	});
-}
-
-function defineImages() {
-	const container = document.getElementById("image-container");
-
-	const [base_x, base_y] = constant.baseCoorDict[animal];
-
-	const images = [
-		{ src: `images/base.png`, x: 0, y: 0, id: "background" },
-		{ src: `images/${animal}.png`, x: base_x, y: base_y, id: "animal" },
-		{ src: "", x: 0, y: 0, id: "head" },
-		{ src: "", x: 0, y: 0, id: "belly" },
-		{ src: "", x: 0, y: 0, id: "mouth" },
-	];
-
-	images.map(({ src, x, y, id }) => {
-		const img = document.createElement("img");
-		img.id = id;
-		img.src = src;
-		img.classList.add("stacked-image");
-		img.style.left = `${x}px`;
-		img.style.top = `${y}px`;
-		container.appendChild(img);
-	});
-
-	draggable.makeDragAble(offset);
 }
 
 function changeHatImage(placement) {
@@ -258,7 +185,7 @@ function changeBackground(change) {
 
 function handleClick(id) {
 	const hat = data[id];
-	const placement = getPlacementFromNumber(hat.u);
+	const placement = list.getPlacementFromNumber(hat.u);
 
 	const element = document.getElementById(id);
 
@@ -270,21 +197,14 @@ function handleClick(id) {
 		element.style.backgroundColor = "";
 	} else {
 		let elementOld = document.getElementById(currentHats[placement]);
-		elementOld.style.backgroundColor = "";
+		if (elementOld !== null) {
+			elementOld.style.backgroundColor = "";
+		}
 		currentHats[placement] = id;
 		element.style.backgroundColor = "yellow";
 	}
 
 	changeHatImage(placement);
-}
-
-function getPlacementFromNumber(u) {
-	if (u == "1") {
-		return "head";
-	} else if (u == "2") {
-		return "mouth";
-	}
-	return "belly";
 }
 
 function clearHat(placement) {

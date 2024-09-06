@@ -1,4 +1,6 @@
 import * as path from "./path.js";
+import * as draggable from "./draggable.js";
+import * as constant from "./constant.js";
 
 export async function getHatData() {
 	try {
@@ -15,6 +17,34 @@ export async function getHatData() {
 		console.error("Error fetching or processing data:", error);
 		return [];
 	}
+}
+
+export function defineImages(offset) {
+	const startAnimal = "dog";
+
+	const container = document.getElementById("image-container");
+
+	const [base_x, base_y] = constant.baseCoorDict[startAnimal];
+
+	const images = [
+		{ src: `images/base.png`, x: 0, y: 0, id: "background" },
+		{ src: `images/${startAnimal}.png`, x: base_x, y: base_y, id: "animal" },
+		{ src: "", x: 0, y: 0, id: "head" },
+		{ src: "", x: 0, y: 0, id: "belly" },
+		{ src: "", x: 0, y: 0, id: "mouth" },
+	];
+
+	images.map(({ src, x, y, id }) => {
+		const img = document.createElement("img");
+		img.id = id;
+		img.src = src;
+		img.classList.add("stacked-image");
+		img.style.left = `${x}px`;
+		img.style.top = `${y}px`;
+		container.appendChild(img);
+	});
+
+	draggable.makeDragAble(offset);
 }
 
 function addOwnHats(dataRaw) {
