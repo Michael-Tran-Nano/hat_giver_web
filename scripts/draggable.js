@@ -1,28 +1,31 @@
 export function makeDragAble(offset) {
 	let isDragging = false;
-	const draggable = document.getElementById("animal");
-	const head = document.getElementById("head");
-	const belly = document.getElementById("belly");
-	const mouth = document.getElementById("mouth");
 
 	let offset_ani_x, offset_ani_y;
-	let offset_head_x, offset_head_y;
-	let offset_belly_x, offset_belly_y;
-	let offset_mouth_x, offset_mouth_y;
+	const hatOffSets = [];
+
+	const draggable = document.getElementById("animal");
+	const hats = [
+		document.getElementById("head"),
+		document.getElementById("belly"),
+		document.getElementById("mouth"),
+	];
 
 	draggable.addEventListener("mousedown", (event) => {
+		document.getElementById("reset-position").hidden = false;
+
 		event.preventDefault();
 		isDragging = true;
 		draggable.style.cursor = "grabbing";
 
 		offset_ani_x = event.clientX - draggable.offsetLeft;
 		offset_ani_y = event.clientY - draggable.offsetTop;
-		offset_head_x = event.clientX - head.offsetLeft;
-		offset_head_y = event.clientY - head.offsetTop;
-		offset_belly_x = event.clientX - belly.offsetLeft;
-		offset_belly_y = event.clientY - belly.offsetTop;
-		offset_mouth_x = event.clientX - mouth.offsetLeft;
-		offset_mouth_y = event.clientY - mouth.offsetTop;
+		hats.forEach((hat, i) => {
+			hatOffSets[i] = [
+				event.clientX - hat.offsetLeft,
+				event.clientY - hat.offsetTop,
+			];
+		});
 
 		document.addEventListener("mousemove", onMouseMove);
 		document.addEventListener("mouseup", onMouseUp);
@@ -33,17 +36,14 @@ export function makeDragAble(offset) {
 			// TODO: add springy effect
 			draggable.style.left = event.clientX - offset_ani_x + "px";
 			draggable.style.top = event.clientY - offset_ani_y + "px";
-			head.style.left = event.clientX - offset_head_x + "px";
-			head.style.top = event.clientY - offset_head_y + "px";
-			belly.style.left = event.clientX - offset_belly_x + "px";
-			belly.style.top = event.clientY - offset_belly_y + "px";
-			mouth.style.left = event.clientX - offset_mouth_x + "px";
-			mouth.style.top = event.clientY - offset_mouth_y + "px";
+			hats.forEach((hat, i) => {
+				hat.style.left = event.clientX - hatOffSets[i][0] + "px";
+				hat.style.top = event.clientY - hatOffSets[i][1] + "px";
+			});
 		}
 	}
 
 	function onMouseUp() {
-		// TODO: add reset position button
 		offset.x = draggable.offsetLeft - offset.animal_ref_x;
 		offset.y = draggable.offsetTop - offset.animal_ref_y;
 		isDragging = false;

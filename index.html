@@ -26,7 +26,10 @@
         <button onclick="clearHat('mouth')">Clear mouth</button>
         <button onclick="clearHats()">Clear all</button>
     </div>
-    <div><input type="text" id="search-bar" placeholder="Search hat by name..."></div>
+    <div>
+        <input type="text" id="search-bar" placeholder="Search hat by name...">
+        <button onclick="resetPosition()" hidden id="reset-position">Reset position</button>
+    </div>
     <div id="list-container"></div>
     <div class="textbox"><p>The images seen in this application are fetched from <a href="https://hundeparken.net/">Hundeparken</a>&lt;3. I do not own the rights to them</p></div>
     <script type="module" src="main.js"></script>

@@ -9,6 +9,7 @@ window.changeAnimal = changeAnimal;
 window.changeBackground = changeBackground;
 window.clearHat = clearHat;
 window.clearHats = clearHats;
+window.resetPosition = resetPosition;
 
 let currentHats = {
 	head: 0,
@@ -175,6 +176,11 @@ function changeHatImage(placement) {
 			animation.startImageChange(placement, animationHolder, images, duration);
 		}
 	}
+}
+
+function resetPosition() {
+	changeAnimal(animal);
+	document.getElementById("reset-position").hidden = true;
 }
 
 function changeAnimal(newAnimal) {
