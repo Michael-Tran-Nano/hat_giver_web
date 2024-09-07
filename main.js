@@ -6,7 +6,7 @@ import * as animation from "./scripts/animation.js";
 import * as list from "./scripts/list.js";
 import * as id from "./scripts/id.js";
 
-// To do, make a global variables file, have own hats in seperate file
+// Suggestions: file with global variables
 
 window.changeAnimal = changeAnimal;
 window.changeBackground = changeBackground;
@@ -24,15 +24,6 @@ let offset = {
 	y: 0,
 	animal_ref_x: constant.baseCoorDict.dog[0],
 	animal_ref_y: constant.baseCoorDict.dog[1],
-};
-
-let headAnimation = null;
-let bellyAnimation = null;
-let mouthAnimation = null;
-let animationHolder = {
-	head: headAnimation,
-	belly: bellyAnimation,
-	mouth: mouthAnimation,
 };
 
 let targetColor = { r: 255, g: 255, b: 255 };
@@ -86,7 +77,7 @@ function changeHatImage(placement) {
 	const hatInfo = data[hatId];
 
 	// Remove animation for placement if exist
-	animation.stopImageChange(placement, animationHolder);
+	animation.stopImageChange(animation.animationHolder[placement]);
 
 	if (hatId == 0) {
 		hatImg.src = "";
@@ -103,7 +94,12 @@ function changeHatImage(placement) {
 		if (images.length > 1) {
 			const rate = hatInfo["a"];
 			const duration = 10000 / rate;
-			animation.startImageChange(placement, animationHolder, images, duration);
+			animation.startImageChange(
+				placement,
+				animation.animationHolder,
+				images,
+				duration
+			);
 		}
 	}
 }
@@ -138,8 +134,8 @@ async function changeAnimalImage() {
 	offset.y = 0;
 	offset.animal_ref_x = x;
 	offset.animal_ref_y = y;
-	for (const [placement, id] of Object.entries(currentHats)) {
-		if (id != 0) {
+	for (const [placement, hat_id] of Object.entries(currentHats)) {
+		if (hat_id != 0) {
 			changeHatImage(placement);
 		}
 	}
@@ -186,16 +182,16 @@ function changeBackground(change) {
 	background.src = path.getBackgroundImage(backgroundCount);
 }
 
-function handleClick(id) {
-	const hat = data[id];
+function handleClick(hat_id) {
+	const hat = data[hat_id];
 	const placement = list.getPlacementFromNumber(hat.u);
 
-	const element = document.getElementById(id);
+	const element = document.getElementById(hat_id);
 
 	if (currentHats[placement] == 0) {
-		currentHats[placement] = id;
+		currentHats[placement] = hat_id;
 		element.style.backgroundColor = "yellow";
-	} else if (currentHats[placement] == id) {
+	} else if (currentHats[placement] == hat_id) {
 		currentHats[placement] = 0;
 		element.style.backgroundColor = "";
 	} else {
@@ -203,7 +199,7 @@ function handleClick(id) {
 		if (elementOld !== null) {
 			elementOld.style.backgroundColor = "";
 		}
-		currentHats[placement] = id;
+		currentHats[placement] = hat_id;
 		element.style.backgroundColor = "yellow";
 	}
 
@@ -211,9 +207,9 @@ function handleClick(id) {
 }
 
 function clearHat(placement) {
-	const id = currentHats[placement];
-	if (id != 0) {
-		const element = document.getElementById(`${id}`);
+	const hat_id = currentHats[placement];
+	if (hat_id != 0) {
+		const element = document.getElementById(`${hat_id}`);
 		element.style.backgroundColor = "";
 		currentHats[placement] = 0;
 		changeHatImage(placement);
