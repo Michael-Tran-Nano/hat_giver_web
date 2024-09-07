@@ -4,6 +4,9 @@ import * as setup from "./scripts/setup.js";
 import * as path from "./scripts/path.js";
 import * as animation from "./scripts/animation.js";
 import * as list from "./scripts/list.js";
+import * as id from "./scripts/id.js";
+
+// To do, make a global variables file, have own hats in seperate file
 
 window.changeAnimal = changeAnimal;
 window.changeBackground = changeBackground;
@@ -34,7 +37,7 @@ let animationHolder = {
 
 let targetColor = { r: 255, g: 255, b: 255 };
 
-let animal = "dog";
+let animal = id.dog;
 let backgroundCount = 0;
 let skipObjects = true;
 let data;
@@ -44,13 +47,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 	list.populateList(data, handleClick, skipObjects);
 	setup.defineImages(offset);
 
-	const searchBar = document.getElementById("search-bar");
+	const searchBar = document.getElementById(id.searchBar);
 	searchBar.addEventListener("input", handleSearch);
 
-	const colorInput = document.getElementById("animal-color");
+	const colorInput = document.getElementById(id.colorWheel);
 	colorInput.addEventListener("input", changeAnimalColorFromPalette);
 
-	const hexText = document.getElementById("hex-text");
+	const hexText = document.getElementById(id.hexText);
 	hexText.addEventListener("input", changeAnimalColorFromBar);
 });
 
@@ -116,7 +119,7 @@ function changeAnimal(newAnimal) {
 }
 
 async function changeAnimalImage() {
-	const animalImg = document.getElementById("animal");
+	const animalImg = document.getElementById(id.animal);
 
 	if (Object.values(targetColor).every((value) => value === 255)) {
 		animalImg.src = `images/${animal}.png`;
@@ -143,7 +146,7 @@ async function changeAnimalImage() {
 }
 
 async function changeAnimalColor() {
-	const animalImg = document.getElementById("animal");
+	const animalImg = document.getElementById(id.animal);
 
 	const recoloredImage = await color.recolorAnimalImage(
 		`images/${animal}.png`,
@@ -157,7 +160,7 @@ function changeAnimalColorFromPalette(event) {
 	targetColor = color.hexToRgb(hexColor);
 	changeAnimalColor();
 
-	const hexText = document.getElementById("hex-text");
+	const hexText = document.getElementById(id.hexText);
 	hexText.value = hexColor;
 }
 
@@ -165,8 +168,8 @@ function changeAnimalColorFromBar(event) {
 	const hexColor = event.target.value;
 	const newColor = color.hexToRgb(hexColor);
 
-	const hexText = document.getElementById("hex-text");
-	const colorInput = document.getElementById("animal-color");
+	const hexText = document.getElementById(id.hexText);
+	const colorInput = document.getElementById(id.colorWheel);
 	if (newColor !== null) {
 		targetColor = newColor;
 		changeAnimalColor();
@@ -179,7 +182,7 @@ function changeAnimalColorFromBar(event) {
 
 function changeBackground(change) {
 	backgroundCount += change;
-	const background = document.getElementById("background");
+	const background = document.getElementById(id.background);
 	background.src = path.getBackgroundImage(backgroundCount);
 }
 

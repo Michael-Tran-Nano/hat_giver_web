@@ -1,7 +1,8 @@
 import * as path from "./path.js";
+import * as id from "./id.js";
 
 export function populateList(data, handleClick, skipObjects) {
-	const container = document.getElementById("list-container");
+	const container = document.getElementById(id.listContainer);
 	container.innerHTML = "";
 
 	const itemsArray = Object.keys(data).map((key) => ({
@@ -49,9 +50,9 @@ export function populateList(data, handleClick, skipObjects) {
 
 export function getPlacementFromNumber(u) {
 	if (u == "1") {
-		return "head";
+		return id.head;
 	} else if (u == "2") {
-		return "mouth";
+		return id.mouth;
 	}
-	return "belly";
+	return id.belly;
 }

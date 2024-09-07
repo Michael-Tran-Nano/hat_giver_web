@@ -1,18 +1,20 @@
+import * as id from "./id.js";
+
 export function makeDragAble(offset) {
 	let isDragging = false;
 
 	let offset_ani_x, offset_ani_y;
 	const hatOffSets = [];
 
-	const draggable = document.getElementById("animal");
+	const draggable = document.getElementById(id.animal);
 	const hats = [
-		document.getElementById("head"),
-		document.getElementById("belly"),
-		document.getElementById("mouth"),
+		document.getElementById(id.head),
+		document.getElementById(id.belly),
+		document.getElementById(id.mouth),
 	];
 
 	draggable.addEventListener("mousedown", (event) => {
-		document.getElementById("reset-position").hidden = false;
+		document.getElementById(id.resetPosition).hidden = false;
 
 		event.preventDefault();
 		isDragging = true;

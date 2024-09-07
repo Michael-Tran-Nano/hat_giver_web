@@ -1,6 +1,7 @@
 import * as path from "./path.js";
 import * as draggable from "./draggable.js";
 import * as constant from "./constant.js";
+import * as id from "./id.js";
 
 export async function getHatData() {
 	try {
@@ -20,18 +21,18 @@ export async function getHatData() {
 }
 
 export function defineImages(offset) {
-	const startAnimal = "dog";
+	const startAnimal = id.dog;
 
-	const container = document.getElementById("image-container");
+	const container = document.getElementById(id.imageContainer);
 
 	const [base_x, base_y] = constant.baseCoorDict[startAnimal];
 
 	const images = [
-		{ src: `images/base.png`, x: 0, y: 0, id: "background" },
-		{ src: `images/${startAnimal}.png`, x: base_x, y: base_y, id: "animal" },
-		{ src: "", x: 0, y: 0, id: "head" },
-		{ src: "", x: 0, y: 0, id: "belly" },
-		{ src: "", x: 0, y: 0, id: "mouth" },
+		{ src: `images/base.png`, x: 0, y: 0, id: id.background },
+		{ src: `images/${startAnimal}.png`, x: base_x, y: base_y, id: id.animal },
+		{ src: "", x: 0, y: 0, id: id.head },
+		{ src: "", x: 0, y: 0, id: id.belly },
+		{ src: "", x: 0, y: 0, id: id.mouth },
 	];
 
 	images.map(({ src, x, y, id }) => {
