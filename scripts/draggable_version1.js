@@ -1,17 +1,13 @@
 import * as constant from "./constant.js";
 import * as id from "./id.js";
 
-// spring settings
-const k = 1;
-const e = 0.75;
-
-const timer = 1000 / 33;
-
 export function makeDragAble(offset) {
 	let isDragging = false;
+
+	let offset_ani_x, offset_ani_y;
+
 	let inRest = true;
 	let intervalId;
-	let offset_ani_x, offset_ani_y;
 
 	const draggable = document.getElementById(id.animal);
 	const hatOrder = [id.head, id.belly, id.mouth];
@@ -55,67 +51,49 @@ export function makeDragAble(offset) {
 	}
 
 	function move() {
-		const velocities = hatOrder.map(() => [0, 0]);
-
 		intervalId = setInterval(() => {
-			let inRestCount = 0;
-
+			let count = 0;
 			hats.forEach((hat, i) => {
-				const hatPlacement = hatOrder[i];
-				const displacement = getDisplacement(hat, hatPlacement, draggable);
+				const placement = hatOrder[i];
+				let x = 0;
+				let y = 0;
 
-				if (displacement === null) {
-					inRestCount++;
+				const hatId = window.currentHats[placement];
+				if (hatId == 0) {
+					count++;
+					return;
+				}
+				const hatInfo = window.data[hatId];
+
+				const [body_x, body_y] =
+					constant.bodyCoorDicts[placement][window.animal];
+				const [hat_x, hat_y] = [hatInfo["x"], hatInfo["y"]];
+
+				let delta_x = body_x + hat_x + draggable.offsetLeft - hat.offsetLeft;
+				let delta_y = body_y + hat_y + draggable.offsetTop - hat.offsetTop;
+
+				if (delta_x != 0) {
+					x = delta_x / 10;
+					x = Math.abs(x) < 1 ? (x > 0 ? 1 : -1) : x;
+				}
+				if (delta_y != 0) {
+					y = delta_y / 10;
+					y = Math.abs(y) < 1 ? (y > 0 ? 1 : -1) : y;
+				}
+
+				if (delta_x == 0 && delta_y == 0) {
+					count++;
 					return;
 				}
 
-				let [v_x, v_y] = [
-					newVelocity(velocities[i][0], displacement[0]),
-					newVelocity(velocities[i][1], displacement[1]),
-				];
-				velocities[i] = [v_x, v_y];
-				if (standingStill(displacement, v_x, v_y)) {
-					inRestCount++;
-					return;
-				}
-
-				hat.style.left = hat.offsetLeft + v_x + "px";
-				hat.style.top = hat.offsetTop + v_y + "px";
+				hat.style.left = hat.offsetLeft + x + "px";
+				hat.style.top = hat.offsetTop + y + "px";
 			});
-
-			if (inRestCount == hatOrder.length) {
+			if (count == hatOrder.length) {
 				clearInterval(intervalId);
 				console.log("stop");
 				inRest = true;
 			}
-		}, timer);
+		}, 1000 / 33);
 	}
-}
-
-function getDisplacement(hat, hatPlacement, draggable) {
-	const hatId = window.currentHats[hatPlacement];
-	if (hatId == 0) {
-		return null;
-	}
-	const hatInfo = window.data[hatId];
-
-	const [body_x, body_y] = constant.bodyCoorDicts[hatPlacement][window.animal];
-	const [hat_x, hat_y] = [hatInfo.x, hatInfo.y];
-
-	let delta_x = hat.offsetLeft - body_x - hat_x - draggable.offsetLeft;
-	let delta_y = hat.offsetTop - body_y - hat_y - draggable.offsetTop;
-
-	return [delta_x, delta_y];
-}
-
-function newVelocity(v_i, delta_d) {
-	let v_f = (v_i - k * delta_d) * e;
-	if (Math.abs(delta_d) <= 2 && Math.abs(v_f) < 3) {
-		v_f = -delta_d;
-	}
-	return v_f;
-}
-
-function standingStill(displacement, v_x, v_y) {
-	return [displacement[0], displacement[1], v_x, v_y].every((v) => v === 0);
 }

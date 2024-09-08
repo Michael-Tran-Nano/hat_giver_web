@@ -6,7 +6,7 @@ import * as animation from "./scripts/animation.js";
 import * as list from "./scripts/list.js";
 import * as id from "./scripts/id.js";
 
-// Suggestions: file with global variables
+console.log("Person til at gøre hjemmesiden pænere søges");
 
 window.changeAnimal = changeAnimal;
 window.changeBackground = changeBackground;
@@ -14,29 +14,26 @@ window.clearHat = clearHat;
 window.clearHats = clearHats;
 window.resetPosition = resetPosition;
 
-let currentHats = {
+window.animal = id.dog;
+window.currentHats = {
 	head: 0,
 	belly: 0,
 	mouth: 0,
 };
-let offset = {
+window.offset = {
 	x: 0,
 	y: 0,
-	animal_ref_x: constant.baseCoorDict.dog[0],
-	animal_ref_y: constant.baseCoorDict.dog[1],
 };
 
 let targetColor = { r: 255, g: 255, b: 255 };
 
-let animal = id.dog;
 let backgroundCount = 0;
 let skipObjects = true;
-let data;
 
 document.addEventListener("DOMContentLoaded", async function () {
-	data = await setup.getHatData();
-	list.populateList(data, handleClick, skipObjects);
-	setup.defineImages(offset);
+	window.data = await setup.getHatData();
+	list.populateList(window.data, handleClick, skipObjects);
+	setup.defineImages(window.offset);
 
 	const searchBar = document.getElementById(id.searchBar);
 	searchBar.addEventListener("input", handleSearch);
@@ -55,10 +52,10 @@ function handleSearch(event) {
 	// A litte surprise
 	if (searchQuery == "unlock objects") {
 		skipObjects = false;
-		list.populateList(data, handleClick, skipObjects);
+		list.populateList(window.data, handleClick, skipObjects);
 	} else if (searchQuery == "lock objects") {
 		skipObjects = true;
-		list.populateList(data, handleClick, skipObjects);
+		list.populateList(window.data, handleClick, skipObjects);
 	}
 
 	listItems.forEach((item) => {
@@ -73,8 +70,8 @@ function handleSearch(event) {
 
 function changeHatImage(placement) {
 	const hatImg = document.getElementById(placement);
-	const hatId = currentHats[placement];
-	const hatInfo = data[hatId];
+	const hatId = window.currentHats[placement];
+	const hatInfo = window.data[hatId];
 
 	// Remove animation for placement if exist
 	animation.stopImageChange(animation.animationHolder[placement]);
@@ -82,11 +79,11 @@ function changeHatImage(placement) {
 	if (hatId == 0) {
 		hatImg.src = "";
 	} else {
-		const [base_x, base_y] = constant.baseCoorDict[animal];
-		const [body_x, body_y] = constant.bodyCoorDicts[placement][animal];
+		const [base_x, base_y] = constant.baseCoorDict[window.animal];
+		const [body_x, body_y] = constant.bodyCoorDicts[placement][window.animal];
 		const [hat_x, hat_y] = [hatInfo["x"], hatInfo["y"]];
-		hatImg.style.left = `${base_x + body_x + hat_x + offset.x}px`;
-		hatImg.style.top = `${base_y + body_y + hat_y + offset.y}px`;
+		hatImg.style.left = `${base_x + body_x + hat_x + window.offset.x}px`;
+		hatImg.style.top = `${base_y + body_y + hat_y + window.offset.y}px`;
 		const images = hatInfo["g"].split(",");
 		const imageNo = images[0];
 		hatImg.src = path.getHatImage(imageNo);
@@ -105,12 +102,12 @@ function changeHatImage(placement) {
 }
 
 function resetPosition() {
-	changeAnimal(animal);
+	changeAnimal(window.animal);
 	document.getElementById("reset-position").hidden = true;
 }
 
 function changeAnimal(newAnimal) {
-	animal = newAnimal;
+	window.animal = newAnimal;
 	changeAnimalImage();
 }
 
@@ -118,23 +115,21 @@ async function changeAnimalImage() {
 	const animalImg = document.getElementById(id.animal);
 
 	if (Object.values(targetColor).every((value) => value === 255)) {
-		animalImg.src = `images/${animal}.png`;
+		animalImg.src = `images/${window.animal}.png`;
 	} else {
 		const recoloredImage = await color.recolorAnimalImage(
-			`images/${animal}.png`,
+			`images/${window.animal}.png`,
 			targetColor
 		);
 		animalImg.src = recoloredImage.src;
 	}
 
-	const [x, y] = constant.baseCoorDict[animal];
+	const [x, y] = constant.baseCoorDict[window.animal];
 	animalImg.style.left = `${x}px`;
 	animalImg.style.top = `${y}px`;
-	offset.x = 0;
-	offset.y = 0;
-	offset.animal_ref_x = x;
-	offset.animal_ref_y = y;
-	for (const [placement, hat_id] of Object.entries(currentHats)) {
+	window.offset.x = 0;
+	window.offset.y = 0;
+	for (const [placement, hat_id] of Object.entries(window.currentHats)) {
 		if (hat_id != 0) {
 			changeHatImage(placement);
 		}
@@ -145,7 +140,7 @@ async function changeAnimalColor() {
 	const animalImg = document.getElementById(id.animal);
 
 	const recoloredImage = await color.recolorAnimalImage(
-		`images/${animal}.png`,
+		`images/${window.animal}.png`,
 		targetColor
 	);
 	animalImg.src = recoloredImage.src;
@@ -183,23 +178,23 @@ function changeBackground(change) {
 }
 
 function handleClick(hat_id) {
-	const hat = data[hat_id];
+	const hat = window.data[hat_id];
 	const placement = list.getPlacementFromNumber(hat.u);
 
 	const element = document.getElementById(hat_id);
 
-	if (currentHats[placement] == 0) {
-		currentHats[placement] = hat_id;
+	if (window.currentHats[placement] == 0) {
+		window.currentHats[placement] = hat_id;
 		element.style.backgroundColor = "yellow";
-	} else if (currentHats[placement] == hat_id) {
-		currentHats[placement] = 0;
+	} else if (window.currentHats[placement] == hat_id) {
+		window.currentHats[placement] = 0;
 		element.style.backgroundColor = "";
 	} else {
-		let elementOld = document.getElementById(currentHats[placement]);
+		let elementOld = document.getElementById(window.currentHats[placement]);
 		if (elementOld !== null) {
 			elementOld.style.backgroundColor = "";
 		}
-		currentHats[placement] = hat_id;
+		window.currentHats[placement] = hat_id;
 		element.style.backgroundColor = "yellow";
 	}
 
@@ -207,17 +202,17 @@ function handleClick(hat_id) {
 }
 
 function clearHat(placement) {
-	const hat_id = currentHats[placement];
+	const hat_id = window.currentHats[placement];
 	if (hat_id != 0) {
 		const element = document.getElementById(`${hat_id}`);
 		element.style.backgroundColor = "";
-		currentHats[placement] = 0;
+		window.currentHats[placement] = 0;
 		changeHatImage(placement);
 	}
 }
 
 function clearHats() {
-	for (let placement in currentHats) {
+	for (let placement in window.currentHats) {
 		clearHat(placement);
 	}
 }
