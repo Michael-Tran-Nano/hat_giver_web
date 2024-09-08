@@ -15,6 +15,7 @@ export function makeDragAble(offset) {
 
 	const draggable = document.getElementById(id.animal);
 	const hatOrder = [id.head, id.belly, id.mouth];
+	const weigths = [1, 2, 0.5];
 	const hats = hatOrder.map((placement) => document.getElementById(placement));
 
 	draggable.addEventListener("mousedown", (event) => {
@@ -69,9 +70,10 @@ export function makeDragAble(offset) {
 					return;
 				}
 
+				let m = weigths[i];
 				let [v_x, v_y] = [
-					newVelocity(velocities[i][0], displacement[0]),
-					newVelocity(velocities[i][1], displacement[1]),
+					newVelocity(velocities[i][0], displacement[0], m),
+					newVelocity(velocities[i][1], displacement[1], m),
 				];
 				velocities[i] = [v_x, v_y];
 				if (standingStill(displacement, v_x, v_y)) {
@@ -108,8 +110,8 @@ function getDisplacement(hat, hatPlacement, draggable) {
 	return [delta_x, delta_y];
 }
 
-function newVelocity(v_i, delta_d) {
-	let v_f = (v_i - k * delta_d) * e;
+function newVelocity(v_i, delta_d, m) {
+	let v_f = (v_i - (k * delta_d) / m) * e;
 	if (Math.abs(delta_d) <= 2 && Math.abs(v_f) < 3) {
 		v_f = -delta_d;
 	}
