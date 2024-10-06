@@ -73,12 +73,22 @@ export function addOwnHats(dataRaw) {
 		{
 			id: -8,
 			n: "Stepbro, I'm stuck!",
-			d: "please help med stepbro",
+			d: "Please help med stepbro",
 			u: "0",
 			g: "-10",
 			a: 0,
 			x: -33,
 			y: -31,
+		},
+		{
+			id: -9,
+			n: "Spøkelsesdrakt Iria",
+			d: "Meget uhyggeligt",
+			u: "1",
+			g: "-11",
+			a: 0,
+			x: -14,
+			y: -13,
 		}
 	);
 }
