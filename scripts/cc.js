@@ -89,6 +89,26 @@ export function addOwnHats(dataRaw) {
 			a: 0,
 			x: -14,
 			y: -13,
+		},
+		{
+			id: -10,
+			n: "Nordlys",
+			d: "Meget hyggeligt",
+			u: "11",
+			g: "4890,4891,4892,4893,4894,4895",
+			a: 50,
+			x: -14,
+			y: -13,
+		},
+		{
+			id: -11,
+			n: "Englevinger blå",
+			d: "Den ægte vare",
+			u: "0",
+			g: "-12",
+			a: 0,
+			x: -8,
+			y: -50,
 		}
 	);
 }
