@@ -14,3 +14,5 @@ export const bodyCoorDicts = {
 	mouth: { dog: [3, 5], wolf: [3, 11], cat: [2, 12], bear: [2, 10] },
 	dildo: { dog: [40, 15], wolf: [40, 26], cat: [31, 18], bear: [47, 16] },
 };
+
+export const excludedHatIds = [1143, 1150, 1862].map(String);

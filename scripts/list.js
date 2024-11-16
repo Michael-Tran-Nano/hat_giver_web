@@ -1,5 +1,6 @@
 import * as path from "./path.js";
 import * as id from "./id.js";
+import * as constants from "./constant.js";
 
 export function populateList(data, handleClick, skipObjects) {
 	const container = document.getElementById(id.listContainer);
@@ -14,6 +15,10 @@ export function populateList(data, handleClick, skipObjects) {
 	itemsArray.forEach((item) => {
 		// skip non-hats
 		if (skipObjects && item.u == "11") {
+			return;
+		}
+
+		if (constants.excludedHatIds.includes(item.key)) {
 			return;
 		}
 
