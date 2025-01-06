@@ -48,13 +48,18 @@ export function setColor(pixel, color) {
 
 export function getShadow(color) {
 	return {
-		r: Math.ceil(color.r * 0.7) - 1,
-		g: Math.ceil(color.g * 0.7) - 1,
-		b: Math.ceil(color.b * 0.7) - 1,
+		r: Math.max(Math.ceil(color.r * 0.7) - 1, 0),
+		g: Math.max(Math.ceil(color.g * 0.7) - 1, 0),
+		b: Math.max(Math.ceil(color.b * 0.7) - 1, 0),
 	};
 }
 
-export function recolorAnimalImage(src, targetColor) {
+export function recolorAnimalImage(
+	src,
+	targetColor,
+	shadowColor,
+	customShadowColor
+) {
 	return new Promise((resolve) => {
 		const img = new Image();
 		img.crossOrigin = "Anonymous";
@@ -69,7 +74,9 @@ export function recolorAnimalImage(src, targetColor) {
 			const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 			const data = imageData.data;
 
-			const targetColorShadow = getShadow(targetColor);
+			const targetColorShadow = customShadowColor
+				? shadowColor
+				: getShadow(targetColor);
 
 			// 4th is alpha
 			for (let i = 0; i < data.length; i += 4) {
