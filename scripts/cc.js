@@ -94,7 +94,7 @@ export function addOwnHats(dataRaw) {
 			id: -10,
 			n: "Nordlys",
 			d: "Meget hyggeligt",
-			u: "0",
+			u: "11",
 			g: "4890,4891,4892,4893,4894,4895",
 			a: 50,
 			x: -170,
