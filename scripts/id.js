@@ -22,6 +22,8 @@ export const colorWheelShadow = "color-wheel-shadow";
 export const hexTextShadow = "hex-text-shadow";
 export const resetPosition = "reset-position";
 export const shadowPanel = "shadow-panel";
+export const matchShadow = "match-shadow";
+export const betaDogs = "beta-dogs";
 
 // Other
 export const listContainer = "list-container";

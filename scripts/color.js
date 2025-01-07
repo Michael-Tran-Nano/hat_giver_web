@@ -95,3 +95,18 @@ export function recolorAnimalImage(
 		};
 	});
 }
+
+export function populateBetaDogs(changeToBetaDog) {
+	const betaSelect = document.getElementById("beta-dogs");
+	constant.betaDogs.forEach((dog) => {
+		const option = document.createElement("option");
+		option.value = `#${dog.fur},#${dog.shadow}`;
+		option.textContent = dog.name;
+		betaSelect.appendChild(option);
+	});
+
+	betaSelect.addEventListener("change", (event) => {
+		const [fur, shadow] = event.target.value.split(",");
+		changeToBetaDog(fur, shadow);
+	});
+}

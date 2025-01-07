@@ -59,6 +59,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 	hexTextShadow.addEventListener("input", (event) =>
 		changeAnimalColorFromBar(event, id.shadowFur)
 	);
+
+	color.populateBetaDogs(changeToBetaDog);
 });
 
 function handleSearch(event) {
@@ -210,6 +212,8 @@ function changeAnimalColorFromBar(event, mode) {
 function toggleShadow() {
 	customShadowColor = !customShadowColor;
 	document.getElementById(id.shadowPanel).hidden = !customShadowColor;
+	document.getElementById(id.matchShadow).hidden = !customShadowColor;
+	document.getElementById(id.betaDogs).hidden = !customShadowColor;
 	if (!customShadowColor) {
 		matchShadow();
 	}
@@ -223,6 +227,16 @@ function matchShadow() {
 	colorInput.value = hexColor;
 	const hexText = document.getElementById(id.hexTextShadow);
 	hexText.value = hexColor;
+}
+
+function changeToBetaDog(fur, shadow) {
+	targetColor = color.hexToRgb(fur);
+	shadowColor = color.hexToRgb(shadow);
+	document.getElementById(id.colorWheel).value = fur;
+	document.getElementById(id.hexText).value = fur;
+	document.getElementById(id.colorWheelShadow).value = shadow;
+	document.getElementById(id.hexTextShadow).value = shadow;
+	changeAnimalColor();
 }
 
 function changeBackground(change) {

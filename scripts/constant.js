@@ -16,3 +16,15 @@ export const bodyCoorDicts = {
 };
 
 export const excludedHatIds = [1143, 1150, 1862].map(String);
+
+export const betaDogs = [
+	{ fur: "FFFFFF", shadow: "FFFFFF", name: "Clonex" },
+	{ fur: "000000", shadow: "000000", name: "Zeav" },
+	{ fur: "FF89BF", shadow: "FF5A6C", name: "Iria" },
+	{ fur: "FFFDBB", shadow: "FEE873", name: "Ellie" },
+	{ fur: "FFDE6B", shadow: "FFA924", name: "Edith" },
+	{ fur: "FFFBF6", shadow: "FFBC6B", name: "Jess" },
+	{ fur: "FFDBE9", shadow: "FFAAC2", name: "Elora" },
+	{ fur: "01002C", shadow: "00001E", name: "Rolex" },
+	{ fur: "FFBF84", shadow: "FF8159", name: "Pumpkin" },
+];

@@ -13,9 +13,8 @@
     <button onclick="changeAnimal('cat')">Cat</button>
     <button onclick="changeAnimal('wolf')">Wolf</button>
     <button onclick="changeAnimal('bear')">Bear</button>
-    <button onclick="changeBackground(-1)">&lt;--</button>
-    <button onclick="changeBackground(1)">--&gt;</button>
-    <button onclick="toggleShadow()">Custom shadow color</button>
+    <button onclick="changeBackground(-1)">&lt;---</button>
+    <button onclick="changeBackground(1)">---&gt;</button>
     <div>
         <label for="color-wheel">Color:</label>
         <input type="color" id="color-wheel" value="#ffffff">
@@ -25,7 +24,13 @@
         <label for="color-wheel-shadow">Shadow color:</label>
         <input type="color" id="color-wheel-shadow" value="#B2B2B2">
         <input type="text" id="hex-text-shadow" placeholder="Insert hex for shadow here">
-        <button onclick="matchShadow()">Match shadow</button>
+    </div>
+    <div>
+        <button onclick="toggleShadow()">Custom shadow color</button>
+        <button hidden id="match-shadow" onclick="matchShadow()">Match shadow</button>
+        <select hidden name="beta" id="beta-dogs">
+            <option value="" disabled selected>Beta dogs</option>
+        </select>
     </div>
     <div>
         <button onclick="clearHat('head')">Clear head</button>
