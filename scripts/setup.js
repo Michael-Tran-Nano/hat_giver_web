@@ -29,7 +29,7 @@ export function defineImages(offset) {
 	const [base_x, base_y] = constant.baseCoorDict[startAnimal];
 
 	const images = [
-		{ src: `images/base.png`, x: 0, y: 0, id: id.background },
+		{ src: path.getBackgroundImage(0), x: 0, y: 0, id: id.background },
 		{ src: `images/${startAnimal}.png`, x: base_x, y: base_y, id: id.animal },
 		{ src: "", x: 0, y: 0, id: id.head },
 		{ src: "", x: 0, y: 0, id: id.belly },

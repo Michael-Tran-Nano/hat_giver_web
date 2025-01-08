@@ -6,16 +6,17 @@ export const getHatImage = (imageNo) =>
 		: `./images/self_images/${imageNo}.png`;
 
 const backgroundImgs = [
-	`base.png`,
-	`base_sand.png`,
+	"base.png",
+	"base_sand.png",
 	"base_snow.png",
 	"base_tricolore.png",
 	"base_tricolore2.png",
+	"kizz.gif",
 ];
 
 export const getBackgroundImage = (count) => {
 	const index =
 		((count % backgroundImgs.length) + backgroundImgs.length) %
 		backgroundImgs.length;
-	return `images/${backgroundImgs[index]}`;
+	return `images/backgrounds/${backgroundImgs[index]}`;
 };
