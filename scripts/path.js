@@ -11,6 +11,7 @@ const backgroundImgs = [
 	"base_snow.png",
 	"base_tricolore.png",
 	"base_tricolore2.png",
+	"RAINBOWPLATFORM.png",
 	"kizz.gif",
 ];
 
