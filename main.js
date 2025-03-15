@@ -5,6 +5,7 @@ import * as path from "./scripts/path.js";
 import * as animation from "./scripts/animation.js";
 import * as list from "./scripts/list.js";
 import * as id from "./scripts/id.js";
+import * as cc from "./scripts/cc.js";
 
 console.log("Person til at gøre hjemmesiden pænere søges");
 
@@ -15,6 +16,8 @@ window.clearHats = clearHats;
 window.resetPosition = resetPosition;
 window.toggleShadow = toggleShadow;
 window.matchShadow = matchShadow;
+window.turnOnCc = turnOnCc;
+window.ccToggle = ccToggle;
 
 window.animal = id.dog;
 window.currentHats = {
@@ -26,12 +29,14 @@ window.offset = {
 	x: 0,
 	y: 0,
 };
+window.customHatLevel = 0; // 0: No custom hats, 1: All hats, 2: Only custom hats
 
 let targetColor = { r: 255, g: 255, b: 255 };
 let shadowColor = { r: 178, g: 178, b: 178 };
 
 let backgroundCount = 0;
 let skipObjects = true;
+let searchQuery = "";
 let customShadowColor = false;
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -64,8 +69,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 function handleSearch(event) {
-	const searchQuery = event.target.value.toLowerCase();
-	const listItems = document.querySelectorAll(".list-item");
+	searchQuery = event.target.value.toLowerCase();
 
 	// A litte surprise
 	if (searchQuery == "unlock objects") {
@@ -76,9 +80,28 @@ function handleSearch(event) {
 		list.populateList(window.data, handleClick, skipObjects);
 	}
 
+	handleHatVisibility();
+}
+
+function turnOnCc() {
+	cc.handleTurnOnCc();
+	handleHatVisibility();
+}
+
+function ccToggle() {
+	cc.handleCcToggle();
+	handleHatVisibility();
+}
+
+function handleHatVisibility() {
+	const listItems = document.querySelectorAll(".list-item");
 	listItems.forEach((item) => {
 		const name = item.querySelector(".item-name").textContent.toLowerCase();
-		if (name.includes(searchQuery)) {
+
+		if (
+			name.includes(searchQuery) &&
+			cc.shouldBeVisible(window.customHatLevel, item)
+		) {
 			item.style.display = "flex";
 		} else {
 			item.style.display = "none";
@@ -121,7 +144,7 @@ function changeHatImage(placement) {
 
 function resetPosition() {
 	changeAnimal(window.animal);
-	document.getElementById("reset-position").hidden = true;
+	document.getElementById(id.resetPosition).hidden = true;
 }
 
 function changeAnimal(newAnimal) {

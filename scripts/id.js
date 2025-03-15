@@ -24,6 +24,8 @@ export const resetPosition = "reset-position";
 export const shadowPanel = "shadow-panel";
 export const matchShadow = "match-shadow";
 export const betaDogs = "beta-dogs";
+export const turnOnCc = "turn-on-cc";
+export const toggleCc = "toggle-cc";
 
 // Other
 export const listContainer = "list-container";

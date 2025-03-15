@@ -15,7 +15,7 @@ export const bodyCoorDicts = {
 	dildo: { dog: [40, 15], wolf: [40, 26], cat: [31, 18], bear: [47, 16] },
 };
 
-export const excludedHatIds = [1143, 1150, 1862].map(String);
+export const excludedHatIds = [1143, 1150, 1858, 1862].map(String);
 
 export const betaDogs = [
 	{ fur: "FFFFFF", shadow: "FFFFFF", name: "Clonex" },

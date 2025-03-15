@@ -26,6 +26,7 @@ export function populateList(data, handleClick, skipObjects) {
 		listItem.className = "list-item";
 		listItem.addEventListener("click", () => handleClick(item.key));
 		listItem.id = item.key;
+		listItem.title = item.d;
 
 		// Type icon
 		const placement = getPlacementFromNumber(item.u);

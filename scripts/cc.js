@@ -1,9 +1,53 @@
+import * as id from "./id.js";
+import * as string from "./string.js";
+
+export function handleTurnOnCc() {
+	const turnOnButton = document.getElementById(id.turnOnCc);
+	const toggleButton = document.getElementById(id.toggleCc);
+
+	if (window.customHatLevel == 0) {
+		window.customHatLevel = 1;
+		toggleButton.hidden = false;
+		toggleButton.textContent = string.showOnlyCc;
+		turnOnButton.textContent = string.hideCc;
+	} else {
+		window.customHatLevel = 0;
+		toggleButton.hidden = true;
+		turnOnButton.textContent = string.showCc;
+	}
+}
+
+export function handleCcToggle() {
+	const toggleButton = document.getElementById(id.toggleCc);
+
+	if (window.customHatLevel == 1) {
+		window.customHatLevel = 2;
+		toggleButton.textContent = string.showAllContent;
+	} else {
+		window.customHatLevel = 1;
+		toggleButton.textContent = string.showOnlyCc;
+	}
+}
+
+export function shouldBeVisible(customHatLevel, item) {
+	switch (customHatLevel) {
+		case 0: // No custom hats
+			return item.id > -100;
+		case 1: // All hats
+			return true;
+		case 2: // Only custom hats
+			return item.id < 0;
+		default:
+			return true;
+	}
+}
+
 export function addOwnHats(dataRaw) {
 	dataRaw.push(
 		{
 			id: -1,
 			n: "Qato ballong",
-			d: "Laget av Qato.",
+			d: "Laget av brugt Qato.",
 			u: "2",
 			g: "-1,-2,-3,-4",
 			a: 50,
@@ -13,7 +57,7 @@ export function addOwnHats(dataRaw) {
 		{
 			id: -2,
 			n: "Iria höm höm",
-			d: "Laget av Iria.",
+			d: "Laget av Irias\nDesignet af Foxy",
 			u: "0",
 			g: "-5",
 			a: 0,
@@ -110,5 +154,6 @@ export function addOwnHats(dataRaw) {
 			x: -8,
 			y: -50,
 		}
+		// negative numbers from -1 to -99 are my own creations. These are always shown.
 	);
 }
