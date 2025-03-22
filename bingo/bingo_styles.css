@@ -4,7 +4,7 @@ body {
     min-height: 100vh;
     background-color: #f0f0f0;
     overflow-x: auto;  /* Allow horizontal scrolling */
-    margin: 0;
+    margin: 1;
     white-space: nowrap;  /* Prevent content from wrapping */
 }
 .container {

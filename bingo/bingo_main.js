@@ -1,5 +1,4 @@
 // when moving away, it should be deleted.
-// fix placement of images
 
 window.saveBingoPlate = saveBingoPlate;
 
@@ -31,13 +30,12 @@ function createImages() {
 	let cols = 3;
 	let rows = 14;
 	let index = 0;
-	const canvasRect = imageCanvas.getBoundingClientRect();
 
 	for (let row = 0; row < rows; row++) {
 		for (let col = 0; col < cols; col++) {
 			if (index >= 42) return;
 			const img = new Image();
-			img.src = `tiles/${index + 1}.png`;
+			img.src = `bingo/tiles/${index + 1}.png`;
 			img.classList.add("draggable");
 
 			// Calculate positions relative to the canvas
@@ -123,44 +121,49 @@ function saveBingoPlate() {
 	const saveCanvas = document.createElement("canvas");
 	const saveCtx = saveCanvas.getContext("2d");
 
-	// Set the size of the new canvas to match the bingo plate
-	saveCanvas.width = bingoCanvas.width;
-	saveCanvas.height = bingoCanvas.height;
+	// Disable smoothing for pixel-perfect rendering
+	saveCtx.imageSmoothingEnabled = false;
 
-	// Draw the background of the bingo plate (plate.png)
+	// Load the background image first
 	const background = new Image();
-	background.src = "plate.png";
+	background.src = "bingo/plate.png";
 
 	background.onload = function () {
-		// Draw the plate background to the new canvas
-		saveCtx.drawImage(background, 0, 0, saveCanvas.width, saveCanvas.height);
+		// Match canvas size to the exact size of the background image
+		saveCanvas.width = background.width;
+		saveCanvas.height = background.height;
 
-		// Now draw the images placed on the bingo canvas
-		let imagesLoaded = 0;
+		// Draw the background with original dimensions
+		saveCtx.drawImage(background, 0, 0, background.width, background.height);
 
-		// Iterate over all the images and draw them at their current positions
-		images.forEach((imgObj) => {
-			if (imgObj.onBingo) {
-				// Create a new image element and set its source
-				const img = new Image();
-				img.src = imgObj.img.src;
+		const plateImages = document.querySelectorAll(".bingo-container img");
 
-				img.onload = function () {
-					// Draw the image on the saved plate at its relative position on the bingo canvas
-					// Use imgObj.x and imgObj.y directly to get the position on the bingoCanvas
-					saveCtx.drawImage(img, imgObj.x - 21, imgObj.y - 21, 42, 42); // Adjust size if needed
-
-					imagesLoaded++;
-
-					// Check if all images are loaded and drawn
-					if (imagesLoaded === images.filter((img) => img.onBingo).length) {
-						const link = document.createElement("a");
-						link.download = "filled_bingo_plate.png";
-						link.href = saveCanvas.toDataURL();
-						link.click();
-					}
+		// Convert NodeList to an array and create promises for image loading
+		const imagePromises = Array.from(plateImages).map((img) => {
+			return new Promise((resolve) => {
+				const plateImage = new Image();
+				plateImage.src = img.src;
+				plateImage.onload = function () {
+					const left = parseInt(img.style.left, 10);
+					const top = parseInt(img.style.top, 10);
+					saveCtx.drawImage(
+						plateImage,
+						left - 1,
+						top + 6,
+						plateImage.width,
+						plateImage.height
+					);
+					resolve();
 				};
-			}
+			});
+		});
+
+		// Wait for all images to load before saving
+		Promise.all(imagePromises).then(() => {
+			const link = document.createElement("a");
+			link.download = "filled_bingo_plate.png";
+			link.href = saveCanvas.toDataURL("image/png"); // Ensure lossless quality
+			link.click();
 		});
 	};
 }
