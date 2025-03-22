@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bingo Plate Maker</title>
+    <link rel="stylesheet" href="bingo_styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="bingo-container">
+            <canvas id="bingoCanvas" width="300" height="520"></canvas>
+            <button onclick="saveBingoPlate()">Save Bingo Plate</button>
+        </div>
+    </div>
+    <div class="container" id="imageCanvasContainer">
+        <canvas id="imageCanvas" width="870" height="442"></canvas>
+    </div>
+    <script type="module" src="bingo_main.js"></script>
+</body>
+</html>

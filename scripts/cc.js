@@ -57,7 +57,7 @@ export function addOwnHats(dataRaw) {
 		{
 			id: -2,
 			n: "Iria höm höm",
-			d: "Laget av Irias\nDesignet af Foxy",
+			d: "Laget av Iria\nDesignet af Foxy",
 			u: "0",
 			g: "-5",
 			a: 0,
@@ -146,6 +146,17 @@ export function addOwnHats(dataRaw) {
 		},
 		{
 			id: -11,
+			n: "Platinstjerne",
+			d: "Bedre enn gull?",
+			u: "0",
+			g: "-13",
+			a: 0,
+			x: -5,
+			y: -15,
+		},
+		// negative numbers from -1 to -99 are always shown.
+		{
+			id: -100,
 			n: "Englevinger blå",
 			d: "Den ægte vare",
 			u: "0",
@@ -154,6 +165,5 @@ export function addOwnHats(dataRaw) {
 			x: -8,
 			y: -50,
 		}
-		// negative numbers from -1 to -99 are my own creations. These are always shown.
 	);
 }
