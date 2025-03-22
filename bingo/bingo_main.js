@@ -15,15 +15,15 @@ const rowSpace = 19;
 const rowCorrection = [0, 0, 0, 0, -1, 4, 3, 0, 0, 0, 0, -1, 4, 3];
 const images = [];
 const slots = [
-	{ x: 47, y: 274 },
-	{ x: 131, y: 274 },
-	{ x: 214, y: 274 },
-	{ x: 47, y: 358 },
-	{ x: 131, y: 358 },
-	{ x: 214, y: 358 },
-	{ x: 47, y: 441 },
-	{ x: 131, y: 441 },
-	{ x: 214, y: 441 },
+	{ x: 46, y: 273 },
+	{ x: 130, y: 273 },
+	{ x: 213, y: 273 },
+	{ x: 46, y: 357 },
+	{ x: 130, y: 357 },
+	{ x: 213, y: 357 },
+	{ x: 46, y: 440 },
+	{ x: 130, y: 440 },
+	{ x: 213, y: 440 },
 ];
 
 function createImages() {
@@ -39,8 +39,8 @@ function createImages() {
 			img.classList.add("draggable");
 
 			// Calculate positions relative to the canvas
-			let xPos = col * (colSpace + imageLen) + colCorrection[col] + 17;
-			let yPos = row * (rowSpace + imageLen) + rowCorrection[row] + 16;
+			let xPos = col * (colSpace + imageLen) + colCorrection[col] + 16;
+			let yPos = row * (rowSpace + imageLen) + rowCorrection[row] + 15;
 
 			if (index > 20) {
 				xPos += 643 + colCorrection2[col];
@@ -148,8 +148,8 @@ function saveBingoPlate() {
 					const top = parseInt(img.style.top, 10);
 					saveCtx.drawImage(
 						plateImage,
-						left - 1,
-						top + 6,
+						left,
+						top + 7,
 						plateImage.width,
 						plateImage.height
 					);

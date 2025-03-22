@@ -22,7 +22,6 @@ body {
     justify-content: flex-start;
 }
 canvas {
-    border: 1px solid black;
     display: block;
     flex-shrink: 0;  /* Prevent canvas resizing */
 }
