@@ -21,6 +21,13 @@ body {
     align-items: center;
     justify-content: flex-start;
 }
+.bingo-container h2 {
+    margin-top: 10px;
+    margin-bottom: 0px; /* Adjust as needed */
+}
+.bingo-container ul {
+    margin-top: 0px; /* Adjust as needed */
+}
 canvas {
     display: block;
     flex-shrink: 0;  /* Prevent canvas resizing */
@@ -45,10 +52,12 @@ canvas {
     position: relative;
 }
 .draggable {
-    width: 42px;
-    height: 42px;
     position: absolute;
     cursor: grab;
+}
+.clickable {
+    position: absolute;
+    cursor: pointer;
 }
 button {
     margin-top: 10px;
