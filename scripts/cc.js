@@ -154,6 +154,16 @@ export function addOwnHats(dataRaw) {
 			x: -5,
 			y: -15,
 		},
+		{
+			id: -12,
+			n: "Puddel gul",
+			d: "Denne burde ikke blive vist endnu :O",
+			u: "1",
+			g: "5538",
+			a: 0,
+			x: -8,
+			y: -10,
+		},
 		// negative numbers from -1 to -99 are always shown.
 		{
 			id: -100,
