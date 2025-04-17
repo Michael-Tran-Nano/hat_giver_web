@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mobile friendly generator</title>
+  <link rel="stylesheet" href="bingo/mobile_bingo_styles.css">
+  <link rel="icon" type="image/x-icon" href="/images/bulldog.ico">
+</head>
+<body>
+  <h2>Mobile friendly generator</h2>
+
+  <div class="grid" id="selectorGrid"></div>
+
+  <div class="plate-container">
+    <canvas id="bingoplateCanvas" width="300" height="520"></canvas>
+  </div>
+  <div id="warning" class="warning"></div>
+  <button onclick="generatePlate()">Generate Bingo Plate</button>
+  <button onclick="generateRandomPlate()">Generate Random Plate</button>
+  <button onclick="saveCanvas()">Save as Image</button>
+  <a href="bingo.html">Link to interactive version</a>
+  <script type="module" src="bingo/mobile_bingo_main.js"></script>
+</body>
+</html>

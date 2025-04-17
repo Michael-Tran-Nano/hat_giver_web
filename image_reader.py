@@ -10,7 +10,7 @@ white_tile = Image.open("bingo/image_markers/white.png")
 width, height = canvas.size
 def save_image_remove(position, image):
     x, y, dx, dy = position
-    box = (x + 2, y + 1, x + dx - 4, y + dy + 40)
+    box = (x + 2, y + 1, x + dx - 4 + 2, y + dy + 40 + 1)
     image = canvas.crop(box)
     image.save(f"bingo/tiles/{i}.png")
     print(f"{i}.png saved")
