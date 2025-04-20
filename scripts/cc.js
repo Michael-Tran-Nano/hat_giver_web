@@ -161,8 +161,8 @@ export function addOwnHats(dataRaw) {
 			u: "1",
 			g: "5538",
 			a: 0,
-			x: -8,
-			y: -10,
+			x: -6,
+			y: -8,
 		},
 		// negative numbers from -1 to -99 are always shown.
 		{
