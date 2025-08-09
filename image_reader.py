@@ -2,7 +2,7 @@ import pyautogui
 from PIL import Image
 
 # Insert canvas name
-haystack_name = "summer.png"
+haystack_name = "bingo_plate_hatter.png"
 
 haystack_path = f"bingo/image_markers/{haystack_name}"
 canvas = Image.open(haystack_path)
