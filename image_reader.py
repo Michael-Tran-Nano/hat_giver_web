@@ -19,12 +19,12 @@ def save_image_remove(position, image):
 
 for i, pos in enumerate(pyautogui.locateAll("bingo/image_markers/tile.png", 
                                             haystack_path, 
-                                            confidence=0.96,
+                                            #confidence=1.0,
                                             region=(0, 0, width//2, height)), 1):
     save_image_remove(pos, canvas)
 for i, pos in enumerate(pyautogui.locateAll("bingo/image_markers/tile.png", 
                                             haystack_path, 
-                                            confidence=0.96,
+                                            #confidence=1.0,
                                             region=(width//2, 0, width//2, height)), 22):
     save_image_remove(pos, canvas)
 
