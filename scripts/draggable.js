@@ -102,7 +102,13 @@ function getDisplacement(hat, hatPlacement, draggable) {
 	const hatInfo = window.data[hatId];
 
 	const [body_x, body_y] = constant.bodyCoorDicts[hatPlacement][window.animal];
-	const [hat_x, hat_y] = [hatInfo.x, hatInfo.y];
+	let [hat_x, hat_y] = [hatInfo["x"], hatInfo["y"]];
+	const shape = hatInfo[id.shapePositions][window.animal];
+	// what about (0, 0)?
+	if (shape?.x || shape?.y) {
+		hat_x = shape?.x;
+		hat_y = shape?.y;
+	}
 
 	let delta_x = hat.offsetLeft - body_x - hat_x - draggable.offsetLeft;
 	let delta_y = hat.offsetTop - body_y - hat_y - draggable.offsetTop;

@@ -15,7 +15,7 @@ export const bodyCoorDicts = {
 	dildo: { dog: [40, 15], wolf: [40, 26], cat: [31, 18], bear: [47, 16] },
 };
 
-export const excludedHatIds = [1143, 1150, 1858, 1862].map(String);
+export const excludedHatIds = [1143, 1150, 1858, 1862, 1893].map(String);
 
 export const betaDogs = [
 	{ fur: "FFFFFF", shadow: "FFFFFF", name: "Clonex" },
@@ -28,3 +28,13 @@ export const betaDogs = [
 	{ fur: "01002C", shadow: "00001E", name: "Rolex" },
 	{ fur: "FFBF84", shadow: "FF8159", name: "Pumpkin" },
 ];
+
+// The properties are capitalized because the names are used directly in the dropdown
+export const languages = {
+	Norsk: "no",
+	Dansk: "dk",
+	Svenska: "se",
+	English: "en",
+};
+
+export const seperator = "|";

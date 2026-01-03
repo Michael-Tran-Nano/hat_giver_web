@@ -38,34 +38,31 @@ let backgroundCount = 0;
 let skipObjects = true;
 let searchQuery = "";
 let customShadowColor = false;
+let language = constant.languages.Norsk;
 
 document.addEventListener("DOMContentLoaded", async function () {
 	window.data = await setup.getHatData();
-	list.populateList(window.data, handleClick, skipObjects);
+	list.populateList(window.data, handleClick, skipObjects, language);
 	setup.defineImages(window.offset);
 
 	const searchBar = document.getElementById(id.searchBar);
 	searchBar.addEventListener("input", handleSearch);
 
 	const colorInput = document.getElementById(id.colorWheel);
-	colorInput.addEventListener("input", (event) =>
-		changeAnimalColorFromPalette(event, id.fur)
-	);
+	colorInput.addEventListener("input", (event) => changeAnimalColorFromPalette(event, id.fur));
 	const hexText = document.getElementById(id.hexText);
-	hexText.addEventListener("input", (event) =>
-		changeAnimalColorFromBar(event, id.fur)
-	);
+	hexText.addEventListener("input", (event) => changeAnimalColorFromBar(event, id.fur));
 
 	const colorInputShadow = document.getElementById(id.colorWheelShadow);
 	colorInputShadow.addEventListener("input", (event) =>
 		changeAnimalColorFromPalette(event, id.shadowFur)
 	);
 	const hexTextShadow = document.getElementById(id.hexTextShadow);
-	hexTextShadow.addEventListener("input", (event) =>
-		changeAnimalColorFromBar(event, id.shadowFur)
-	);
+	hexTextShadow.addEventListener("input", (event) => changeAnimalColorFromBar(event, id.shadowFur));
 
 	color.populateBetaDogs(changeToBetaDog);
+	list.addLanguageOptions();
+	handleHatVisibility();
 });
 
 function handleSearch(event) {
@@ -74,10 +71,10 @@ function handleSearch(event) {
 	// A litte surprise
 	if (searchQuery == "unlock objects") {
 		skipObjects = false;
-		list.populateList(window.data, handleClick, skipObjects);
+		list.populateList(window.data, handleClick, skipObjects, language);
 	} else if (searchQuery == "lock objects") {
 		skipObjects = true;
-		list.populateList(window.data, handleClick, skipObjects);
+		list.populateList(window.data, handleClick, skipObjects, language);
 	}
 
 	handleHatVisibility();
@@ -94,14 +91,11 @@ function ccToggle() {
 }
 
 function handleHatVisibility() {
-	const listItems = document.querySelectorAll(".list-item");
+	const listItems = document.querySelectorAll(`.${id.listItemClass}`);
 	listItems.forEach((item) => {
-		const name = item.querySelector(".item-name").textContent.toLowerCase();
+		const name = item.querySelector(`.${id.itemNameClass}`).dataset.names;
 
-		if (
-			name.includes(searchQuery) &&
-			cc.shouldBeVisible(window.customHatLevel, item)
-		) {
+		if (name.includes(searchQuery) && cc.shouldBeVisible(window.customHatLevel, item)) {
 			item.style.display = "flex";
 		} else {
 			item.style.display = "none";
@@ -122,7 +116,13 @@ function changeHatImage(placement) {
 	} else {
 		const [base_x, base_y] = constant.baseCoorDict[window.animal];
 		const [body_x, body_y] = constant.bodyCoorDicts[placement][window.animal];
-		const [hat_x, hat_y] = [hatInfo["x"], hatInfo["y"]];
+		let [hat_x, hat_y] = [hatInfo["x"], hatInfo["y"]];
+		const shape = hatInfo[id.shapePositions][window.animal];
+		// what about (0, 0)?
+		if (shape?.x || shape?.y) {
+			hat_x = shape?.x;
+			hat_y = shape?.y;
+		}
 		hatImg.style.left = `${base_x + body_x + hat_x + window.offset.x}px`;
 		hatImg.style.top = `${base_y + body_y + hat_y + window.offset.y}px`;
 		const images = hatInfo["g"].split(",");
@@ -132,12 +132,7 @@ function changeHatImage(placement) {
 		if (images.length > 1) {
 			const rate = hatInfo["a"];
 			const duration = 10000 / rate;
-			animation.startImageChange(
-				placement,
-				animation.animationHolder,
-				images,
-				duration
-			);
+			animation.startImageChange(placement, animation.animationHolder, images, duration);
 		}
 	}
 }
@@ -201,9 +196,7 @@ function changeAnimalColorFromPalette(event, mode) {
 	}
 
 	changeAnimalColor();
-	const hexText = document.getElementById(
-		isMain ? id.hexText : id.hexTextShadow
-	);
+	const hexText = document.getElementById(isMain ? id.hexText : id.hexTextShadow);
 	hexText.value = hexColor.toUpperCase();
 }
 
@@ -212,12 +205,8 @@ function changeAnimalColorFromBar(event, mode) {
 	const hexColor = event.target.value;
 	const newColor = color.hexToRgb(hexColor);
 
-	const hexText = document.getElementById(
-		isMain ? id.hexText : id.hexTextShadow
-	);
-	const colorInput = document.getElementById(
-		isMain ? id.colorWheel : id.colorWheelShadow
-	);
+	const hexText = document.getElementById(isMain ? id.hexText : id.hexTextShadow);
+	const colorInput = document.getElementById(isMain ? id.colorWheel : id.colorWheelShadow);
 	if (newColor !== null) {
 		if (isMain) {
 			targetColor = newColor;

@@ -26,8 +26,14 @@ export const matchShadow = "match-shadow";
 export const betaDogs = "beta-dogs";
 export const turnOnCc = "turn-on-cc";
 export const toggleCc = "toggle-cc";
+export const language = "hat-language";
 
 // Other
 export const listContainer = "list-container";
 export const imageContainer = "image-container";
 export const background = "background";
+export const shapePositions = "shapePositions";
+
+// Classes
+export const itemNameClass = "item-name";
+export const listItemClass = "list-item";

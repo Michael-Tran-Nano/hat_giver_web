@@ -1,4 +1,5 @@
 import * as constant from "./constant.js";
+import * as id from "./id.js";
 
 export function hexToRgb(hex) {
 	hex = hex.replace(/^#/, "");
@@ -97,7 +98,7 @@ export function recolorAnimalImage(
 }
 
 export function populateBetaDogs(changeToBetaDog) {
-	const betaSelect = document.getElementById("beta-dogs");
+	const betaSelect = document.getElementById(id.betaDogs);
 	constant.betaDogs.forEach((dog) => {
 		const option = document.createElement("option");
 		option.value = `#${dog.fur},#${dog.shadow}`;
