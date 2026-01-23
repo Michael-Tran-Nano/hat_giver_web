@@ -9,6 +9,7 @@ export const bear = "bear";
 export const head = "head";
 export const belly = "belly";
 export const mouth = "mouth";
+export const placementTranslation = { mouth: "mouth", head: "hat", belly: "back" };
 
 // Colors
 export const fur = "fur";

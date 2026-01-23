@@ -118,7 +118,7 @@ function changeHatImage(placement) {
 		const [body_x, body_y] = constant.bodyCoorDicts[placement][window.animal];
 		let [hat_x, hat_y] = [hatInfo["x"], hatInfo["y"]];
 		const shape = hatInfo[id.shapePositions][window.animal];
-		// what about (0, 0)?
+
 		if (shape?.x || shape?.y) {
 			hat_x = shape?.x;
 			hat_y = shape?.y;
@@ -134,6 +134,8 @@ function changeHatImage(placement) {
 			const duration = 10000 / rate;
 			animation.startImageChange(placement, animation.animationHolder, images, duration);
 		}
+
+		list.arrangeHatOrder();
 	}
 }
 

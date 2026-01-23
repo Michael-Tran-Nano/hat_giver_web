@@ -68,6 +68,26 @@ export function getPlacementFromNumber(u) {
 	return id.belly;
 }
 
+// TODO: move this and other logic to another file
+export function arrangeHatOrder() {
+	const placementNames = Object.keys(window.currentHats);
+	placementNames.sort(function (a, b) {
+		return getRankOfPlacement(a) - getRankOfPlacement(b);
+	});
+
+	const imageContainer = document.getElementById(id.imageContainer);
+	placementNames.forEach((placement) => {
+		const hatElement = document.getElementById(placement);
+		imageContainer.appendChild(hatElement);
+	});
+}
+
+function getRankOfPlacement(placement) {
+	const hatData = window.data[window.currentHats[placement]];
+	const layerName = id.placementTranslation[placement];
+	return hatData?.wearLayer[layerName] ?? 0;
+}
+
 export function addLanguageOptions() {
 	const languageSelect = document.getElementById(id.language);
 

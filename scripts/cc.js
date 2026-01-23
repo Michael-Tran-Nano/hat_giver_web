@@ -77,6 +77,11 @@ export function addOwnHats(dataRaw) {
 			a: 50,
 			x: -10,
 			y: -36,
+			wearLayer: {
+				mouth: 2,
+				hat: 0,
+				back: 1,
+			},
 		},
 		{
 			id: -2,
@@ -111,6 +116,11 @@ export function addOwnHats(dataRaw) {
 			a: 0,
 			x: -32,
 			y: -29,
+			wearLayer: {
+				mouth: 2,
+				hat: 0,
+				back: 1,
+			},
 		},
 		{
 			id: -3,
@@ -145,6 +155,11 @@ export function addOwnHats(dataRaw) {
 			a: 50,
 			x: -170,
 			y: -75,
+			wearLayer: {
+				mouth: 2,
+				hat: 0,
+				back: 1,
+			},
 		},
 		// negative numbers from -1 to -99 are always shown.
 		{
@@ -180,6 +195,11 @@ export function addOwnHats(dataRaw) {
 			a: 0,
 			x: -8,
 			y: -50,
+			wearLayer: {
+				mouth: 2,
+				hat: 0,
+				back: 1,
+			},
 		},
 		{
 			id: -101,
@@ -214,6 +234,11 @@ export function addOwnHats(dataRaw) {
 			a: 160,
 			x: 7,
 			y: -15,
+			wearLayer: {
+				mouth: 2,
+				hat: 0,
+				back: 1,
+			},
 		},
 		{
 			id: -102,
@@ -248,6 +273,11 @@ export function addOwnHats(dataRaw) {
 			a: 0,
 			x: -5,
 			y: -15,
+			wearLayer: {
+				mouth: 2,
+				hat: 0,
+				back: 1,
+			},
 		},
 		{
 			id: -103,
@@ -282,6 +312,11 @@ export function addOwnHats(dataRaw) {
 			a: 0,
 			x: -21,
 			y: -6,
+			wearLayer: {
+				mouth: 2,
+				hat: 0,
+				back: 1,
+			},
 		},
 		{
 			id: -104,
@@ -316,6 +351,11 @@ export function addOwnHats(dataRaw) {
 			a: 0,
 			x: -23,
 			y: -4,
+			wearLayer: {
+				mouth: 2,
+				hat: 0,
+				back: 1,
+			},
 		},
 		{
 			id: -105,
@@ -350,6 +390,11 @@ export function addOwnHats(dataRaw) {
 			a: 0,
 			x: -21,
 			y: -3,
+			wearLayer: {
+				mouth: 2,
+				hat: 0,
+				back: 1,
+			},
 		},
 		{
 			id: -106,
@@ -384,6 +429,11 @@ export function addOwnHats(dataRaw) {
 			a: 0,
 			x: -33,
 			y: -31,
+			wearLayer: {
+				mouth: 2,
+				hat: 0,
+				back: 1,
+			},
 		},
 		{
 			id: -107,
@@ -418,6 +468,11 @@ export function addOwnHats(dataRaw) {
 			a: 0,
 			x: -14,
 			y: -13,
+			wearLayer: {
+				mouth: 2,
+				hat: 0,
+				back: 1,
+			},
 		},
 		{
 			id: -108,
@@ -452,6 +507,11 @@ export function addOwnHats(dataRaw) {
 			a: 0,
 			x: -13,
 			y: -22,
+			wearLayer: {
+				mouth: 2,
+				hat: 0,
+				back: 1,
+			},
 		}
 	);
 }
