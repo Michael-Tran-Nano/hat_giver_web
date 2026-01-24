@@ -20,12 +20,18 @@ window.turnOnCc = turnOnCc;
 window.ccToggle = ccToggle;
 
 window.animal = id.dog;
-window.currentHats = {
-	// TODO: Have en event listener for changes to that.
-	head: 0,
-	belly: 0,
-	mouth: 0,
-};
+window.currentHats = createWatchedObject(
+	{
+		head: 0,
+		belly: 0,
+		mouth: 0,
+	},
+	({ property, oldValue, newValue }) => {
+		hatLogic.markSelectedHatFromWatch(oldValue, newValue);
+	}
+);
+
+// For dragging
 window.offset = {
 	x: 0,
 	y: 0,
@@ -134,11 +140,8 @@ async function changeAnimalImage() {
 	animalImg.style.top = `${y}px`;
 	window.offset.x = 0;
 	window.offset.y = 0;
-	for (const [placement, hat_id] of Object.entries(window.currentHats)) {
-		if (hat_id != 0) {
-			hatLogic.changeHatImage(placement);
-		}
-	}
+
+	hatLogic.readjustHats();
 }
 
 async function changeAnimalColor() {
@@ -222,4 +225,23 @@ function changeBackground(change) {
 	backgroundCount += change;
 	const background = document.getElementById(id.background);
 	background.src = path.getBackgroundImage(backgroundCount);
+}
+
+function createWatchedObject(obj, onChange) {
+	return new Proxy(obj, {
+		set(target, property, newValue) {
+			const oldValue = target[property];
+
+			if (oldValue !== newValue) {
+				onChange({
+					property,
+					oldValue,
+					newValue,
+				});
+			}
+
+			target[property] = newValue;
+			return true;
+		},
+	});
 }

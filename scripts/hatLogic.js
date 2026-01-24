@@ -8,31 +8,29 @@ export function handleClick(hat_id) {
 	const hat = window.data[hat_id];
 	const placement = list.getPlacementFromNumber(hat.u);
 
-	const element = document.getElementById(hat_id);
-
-	if (window.currentHats[placement] == 0) {
-		window.currentHats[placement] = hat_id;
-		element.style.backgroundColor = "yellow";
-	} else if (window.currentHats[placement] == hat_id) {
+	if (window.currentHats[placement] == hat_id) {
 		window.currentHats[placement] = 0;
-		element.style.backgroundColor = "";
 	} else {
-		const elementOld = document.getElementById(window.currentHats[placement]);
-		if (elementOld !== null) {
-			elementOld.style.backgroundColor = "";
-		}
 		window.currentHats[placement] = hat_id;
-		element.style.backgroundColor = "yellow";
 	}
 
 	changeHatImage(placement);
 }
 
+export function markSelectedHatFromWatch(oldHatId, newHatId) {
+	if (oldHatId) {
+		const element = document.getElementById(oldHatId);
+		element.style.backgroundColor = "";
+	}
+	if (newHatId) {
+		const element = document.getElementById(newHatId);
+		element.style.backgroundColor = "yellow";
+	}
+}
+
 export function clearHat(placement) {
 	const hat_id = window.currentHats[placement];
 	if (hat_id != 0) {
-		const element = document.getElementById(`${hat_id}`);
-		element.style.backgroundColor = "";
 		window.currentHats[placement] = 0;
 		changeHatImage(placement);
 	}
@@ -41,6 +39,14 @@ export function clearHat(placement) {
 export function clearHats() {
 	for (let placement in window.currentHats) {
 		clearHat(placement);
+	}
+}
+
+export function readjustHats() {
+	for (const [placement, hat_id] of Object.entries(window.currentHats)) {
+		if (hat_id != 0) {
+			changeHatImage(placement);
+		}
 	}
 }
 
