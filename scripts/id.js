@@ -28,6 +28,8 @@ export const betaDogs = "beta-dogs";
 export const turnOnCc = "turn-on-cc";
 export const toggleCc = "toggle-cc";
 export const language = "hat-language";
+export const adjustmentButton = "adjustment-button";
+export const positionPanel = "position-panel";
 
 // Other
 export const listContainer = "list-container";

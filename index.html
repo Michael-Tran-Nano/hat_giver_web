@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,48 +8,130 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/x-icon" href="/images/bulldog.ico">
 </head>
+
 <body style="image-rendering: pixelated;">
-    <div id="image-container"></div>
-    <button onclick="changeAnimal('dog')">Dog</button>
-    <button onclick="changeAnimal('cat')">Cat</button>
-    <button onclick="changeAnimal('wolf')">Wolf</button>
-    <button onclick="changeAnimal('bear')">Bear</button>
-    <button onclick="changeBackground(-1)">&lt;--</button>
-    <button onclick="changeBackground(1)">--&gt;</button>
-    <select name="language" id="hat-language"></select>
-    <div>
-        <label for="color-wheel">Color:</label>
-        <input type="color" id="color-wheel" value="#ffffff">
-        <input type="text" id="hex-text" placeholder="Insert hex here">
+    <div class="app-layout">
+
+        <div class="main-ui">
+            <div id="image-container"></div>
+
+            <button onclick="changeAnimal('dog')">Dog</button>
+            <button onclick="changeAnimal('cat')">Cat</button>
+            <button onclick="changeAnimal('wolf')">Wolf</button>
+            <button onclick="changeAnimal('bear')">Bear</button>
+            <button onclick="changeBackground(-1)">&lt;--</button>
+            <button onclick="changeBackground(1)">--&gt;</button>
+
+            <select name="language" id="hat-language"></select>
+
+            <div>
+                <label for="color-wheel">Color:</label>
+                <input type="color" id="color-wheel" value="#ffffff">
+                <input type="text" id="hex-text" placeholder="Insert hex here">
+            </div>
+
+            <div hidden id="shadow-panel">
+                <label for="color-wheel-shadow">Shadow color:</label>
+                <input type="color" id="color-wheel-shadow" value="#B2B2B2">
+                <input type="text" id="hex-text-shadow" placeholder="Insert hex for shadow here">
+            </div>
+
+            <div>
+                <button onclick="toggleShadow()">Custom shadow color</button>
+                <button hidden id="match-shadow" onclick="matchShadow()">Match shadow</button>
+                <select hidden name="beta" id="beta-dogs">
+                    <option value="" disabled selected>Beta dogs</option>
+                </select>
+            </div>
+
+            <div>
+                <button onclick="clearHat('head')">Clear head</button>
+                <button onclick="clearHat('belly')">Clear belly</button>
+                <button onclick="clearHat('mouth')">Clear mouth</button>
+                <button onclick="clearHats()">Clear all</button>
+            </div>
+
+            <div>
+                <button id="turn-on-cc" onclick="turnOnCc()">Show custom content</button>
+                <button hidden id="toggle-cc" onclick="ccToggle()">Show only custom content</button>
+            </div>
+
+            <div>
+                <input type="text" id="search-bar" placeholder="Search hat by name...">
+                <button onclick="toggleAdjustment()" id="adjustment-button">Open ajustment panel</button>
+            </div>
+
+            <div>
+                <button onclick="resetPosition()" hidden id="reset-position">Reset position</button>
+            </div>
+
+            <div id="list-container"></div>
+
+            <div class="textbox">
+                <p>
+                    The images seen in this application are fetched from
+                    <a href="https://hundeparken.net/">Hundeparken</a> &lt;3.
+                    I do not own the rights to them
+                </p>
+            </div>
+        </div>
+
+        <div hidden class="position-panel" id="position-panel">
+            <h3>Adjust positions</h3>
+
+            <div class="control-group">
+                <h4>Head</h4>
+                <div>x:</div>
+                <input id="head-slider-x" type="range" min="-30" max="30" value="0"
+                    oninput="updateCustomPosition('head', 'x', this.value)">
+                <input id="head-field-x" type="number" value="0"
+                    oninput="updateCustomPosition('head', 'x', this.value)">
+                <button onclick="updateCustomPosition('head', 'x', 0)">Reset</button>
+                <div>y:</div>
+                <input id="head-slider-y" type="range" min="-30" max="30" value="0"
+                    oninput="updateCustomPosition('head', 'y', this.value)">
+                <input id="head-field-y" type="number" value="0"
+                    oninput="updateCustomPosition('head', 'y', this.value)">
+                <button onclick="updateCustomPosition('head', 'y', 0)">Reset</button>
+            </div>
+
+            <div class="control-group">
+                <h4>Belly</h4>
+                <div>x:</div>
+                <input id="belly-slider-x" type="range" min="-30" max="30" value="0"
+                    oninput="updateCustomPosition('belly', 'x', this.value)">
+                <input id="belly-field-x" type="number" value="0"
+                    oninput="updateCustomPosition('belly', 'x', this.value)">
+                <button onclick="updateCustomPosition('belly', 'x', 0)">Reset</button>
+                <div>y:</div>
+                <input id="belly-slider-y" type="range" min="-30" max="30" value="0"
+                    oninput="updateCustomPosition('belly', 'y', this.value)">
+                <input id="belly-field-y" type="number" value="0"
+                    oninput="updateCustomPosition('belly', 'y', this.value)">
+                <button onclick="updateCustomPosition('belly', 'y', 0)">Reset</button>
+            </div>
+
+            <div class="control-group">
+                <h4>Mouth</h4>
+                <div>x:</div>
+                <input id="mouth-slider-x" type="range" min="-30" max="30" value="0"
+                    oninput="updateCustomPosition('mouth', 'x', this.value)">
+                <input id="mouth-field-x" type="number" value="0"
+                    oninput="updateCustomPosition('mouth', 'x', this.value)">
+                <button onclick="updateCustomPosition('mouth', 'x', 0)">Reset</button>
+                <div>y:</div>
+                <input id="mouth-slider-y" type="range" min="-30" max="30" value="0"
+                    oninput="updateCustomPosition('mouth', 'y', this.value)">
+                <input id="mouth-field-y" type="number" value="0"
+                    oninput="updateCustomPosition('mouth', 'y', this.value)">
+                <button onclick="updateCustomPosition('mouth', 'y', 0)">Reset</button>
+            </div>
+            <button onclick="resetCustomPositions()">Reset all positions</button>
+        </div>
+
     </div>
-    <div hidden id="shadow-panel">
-        <label for="color-wheel-shadow">Shadow color:</label>
-        <input type="color" id="color-wheel-shadow" value="#B2B2B2">
-        <input type="text" id="hex-text-shadow" placeholder="Insert hex for shadow here">
-    </div>
-    <div>
-        <button onclick="toggleShadow()">Custom shadow color</button>
-        <button hidden id="match-shadow" onclick="matchShadow()">Match shadow</button>
-        <select hidden name="beta" id="beta-dogs">
-            <option value="" disabled selected>Beta dogs</option>
-        </select>
-    </div>
-    <div>
-        <button onclick="clearHat('head')">Clear head</button>
-        <button onclick="clearHat('belly')">Clear belly</button>
-        <button onclick="clearHat('mouth')">Clear mouth</button>
-        <button onclick="clearHats()">Clear all</button>
-    </div>
-    <div>
-        <button id="turn-on-cc" onclick="turnOnCc()">Show custom content</button>
-        <button hidden id="toggle-cc" onclick="ccToggle()">Show only custom content</button>
-    </div>
-    <div>
-        <input type="text" id="search-bar" placeholder="Search hat by name...">
-        <button onclick="resetPosition()" hidden id="reset-position">Reset position</button>
-    </div>
-    <div id="list-container"></div>
-    <div class="textbox"><p>The images seen in this application are fetched from <a href="https://hundeparken.net/">Hundeparken</a>&lt;3. I do not own the rights to them</p></div>
+
     <script type="module" src="main.js"></script>
 </body>
+
 </html>

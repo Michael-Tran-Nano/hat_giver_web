@@ -18,6 +18,9 @@ window.toggleShadow = toggleShadow;
 window.matchShadow = matchShadow;
 window.turnOnCc = turnOnCc;
 window.ccToggle = ccToggle;
+window.toggleAdjustment = hatLogic.toggleAdjustment;
+window.updateCustomPosition = hatLogic.updateCustomPosition;
+window.resetCustomPositions = hatLogic.resetCustomPositions;
 
 window.animal = id.dog;
 window.currentHats = createWatchedObject(
@@ -30,13 +33,28 @@ window.currentHats = createWatchedObject(
 		hatLogic.markSelectedHatFromWatch(oldValue, newValue);
 	}
 );
+window.customHatLevel = 0; // 0: No custom hats, 1: All hats, 2: Only custom hats
+window.adjustmentPanelShown = false;
+
+// Set positions (without custom changes)
+window.windowPositions = {
+	head: { x: 0, y: 0 },
+	belly: { x: 0, y: 0 },
+	mouth: { x: 0, y: 0 },
+};
 
 // For dragging
 window.offset = {
 	x: 0,
 	y: 0,
 };
-window.customHatLevel = 0; // 0: No custom hats, 1: All hats, 2: Only custom hats
+
+// Custom positions
+window.customPositions = {
+	head: { x: 0, y: 0 },
+	belly: { x: 0, y: 0 },
+	mouth: { x: 0, y: 0 },
+};
 
 let targetColor = { r: 255, g: 255, b: 255 };
 let shadowColor = { r: 178, g: 178, b: 178 };

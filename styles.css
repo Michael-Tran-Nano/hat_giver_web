@@ -43,3 +43,32 @@ body {
     max-width: 350px;
     word-wrap: break-word;
 }
+
+.app-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.main-ui {
+    flex-shrink: 0;
+}
+
+.position-panel {
+    width: 260px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background: #f8f8f8;
+}
+
+.control-group {
+    margin-bottom: 15px;
+}
+
+.control-group h4 {
+    margin: 5px 0;
+}
+
+.control-group input[type="range"] {
+    width: 100%;
+}
