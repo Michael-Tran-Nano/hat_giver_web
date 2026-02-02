@@ -512,6 +512,45 @@ export function addOwnHats(dataRaw) {
 				hat: 0,
 				back: 1,
 			},
+		},
+		{
+			id: -109,
+			name: {
+				dk: "Savklinge dildo animeret",
+				no: "Sagblad dildo animert",
+				se: "Sågblad dildo animerad",
+				en: "Saw blade dildo animated",
+			},
+			description: {
+				dk: "Sidder bedst i numsen.",
+				no: "Passer best i rompa.",
+				se: "Passar bäst i rumpan.",
+				en: "Fits best in the butt.",
+			},
+			shapePositions: {
+				bear: {
+					x: 0,
+					y: 0,
+				},
+				wolf: {
+					x: 0,
+					y: 0,
+				},
+				cat: {
+					x: 0,
+					y: 0,
+				},
+			},
+			u: "12",
+			g: "3854,-14",
+			a: 100,
+			x: -19,
+			y: -14,
+			wearLayer: {
+				mouth: 2,
+				hat: 0,
+				back: 1,
+			},
 		}
 	);
 }

@@ -7,6 +7,7 @@ import * as id from "./scripts/id.js";
 import * as cc from "./scripts/cc.js";
 import * as hatLogic from "./scripts/hatLogic.js";
 
+// Todo: add hat order forcer and upload own pictures.
 console.log("Person til at gøre hjemmesiden pænere søges");
 
 window.changeAnimal = changeAnimal;
