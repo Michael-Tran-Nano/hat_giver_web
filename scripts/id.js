@@ -36,6 +36,10 @@ export const listContainer = "list-container";
 export const imageContainer = "image-container";
 export const background = "background";
 export const shapePositions = "shapePositions";
+export const front = "front";
+export const undo = "undo";
+export const back = "back";
+export const priorityToId = { 1: front, 0: undo, "-1": back };
 
 // Classes
 export const itemNameClass = "item-name";

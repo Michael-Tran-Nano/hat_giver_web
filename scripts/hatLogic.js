@@ -88,9 +88,38 @@ export function changeHatImage(placement) {
 	}
 }
 
+export function setHatPriority(placement, priority) {
+	if (priority === 0) {
+		window.hatPriority[placement] = 0;
+	} else {
+		for (const [iPlacement, iPriority] of Object.entries(window.hatPriority)) {
+			if (iPriority === priority) {
+				window.hatPriority[iPlacement] = 0;
+			}
+		}
+
+		window.hatPriority[placement] = priority;
+	}
+
+	arrangeHatOrder();
+}
+
+export function enablePrioritybuttonsFromWatch(placement, oldPriority, newPriority) {
+	const oldId = id.priorityToId[oldPriority];
+	document.getElementById(`${placement}-${oldId}`).disabled = false;
+
+	const newId = id.priorityToId[newPriority];
+	document.getElementById(`${placement}-${newId}`).disabled = true;
+}
+
 function arrangeHatOrder() {
 	const placementNames = Object.keys(window.currentHats);
 	placementNames.sort(function (a, b) {
+		const priorityA = window.hatPriority[a] || 0;
+		const priorityB = window.hatPriority[b] || 0;
+		if (priorityA !== priorityB) {
+			return priorityA - priorityB;
+		}
 		return getRankOfPlacement(a) - getRankOfPlacement(b);
 	});
 

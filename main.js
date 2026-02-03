@@ -7,7 +7,7 @@ import * as id from "./scripts/id.js";
 import * as cc from "./scripts/cc.js";
 import * as hatLogic from "./scripts/hatLogic.js";
 
-// Todo: add hat order forcer and upload own pictures.
+// Todo: upload own pictures.
 console.log("Person til at gøre hjemmesiden pænere søges");
 
 window.changeAnimal = changeAnimal;
@@ -22,6 +22,7 @@ window.ccToggle = ccToggle;
 window.toggleAdjustment = hatLogic.toggleAdjustment;
 window.updateCustomPosition = hatLogic.updateCustomPosition;
 window.resetCustomPositions = hatLogic.resetCustomPositions;
+window.setHatPriority = hatLogic.setHatPriority;
 
 window.animal = id.dog;
 window.currentHats = createWatchedObject(
@@ -56,6 +57,17 @@ window.customPositions = {
 	belly: { x: 0, y: 0 },
 	mouth: { x: 0, y: 0 },
 };
+
+window.hatPriority = createWatchedObject(
+	{
+		head: 0,
+		belly: 0,
+		mouth: 0,
+	},
+	({ property, oldValue, newValue }) => {
+		hatLogic.enablePrioritybuttonsFromWatch(property, oldValue, newValue);
+	}
+);
 
 let targetColor = { r: 255, g: 255, b: 255 };
 let shadowColor = { r: 178, g: 178, b: 178 };
