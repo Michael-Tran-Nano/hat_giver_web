@@ -40,7 +40,11 @@ export const front = "front";
 export const undo = "undo";
 export const back = "back";
 export const priorityToId = { 1: front, 0: undo, "-1": back };
+export const fileInput = "fileInput";
+export const placementToCustomId = { head: -1, belly: -2, mouth: -3 };
+export const image = "image";
 
 // Classes
 export const itemNameClass = "item-name";
 export const listItemClass = "list-item";
+export const itemImage = "item-image";

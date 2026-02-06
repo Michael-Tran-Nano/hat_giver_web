@@ -135,7 +135,16 @@
                     oninput="updateCustomPosition('mouth', 'y', this.value)">
                 <button onclick="updateCustomPosition('mouth', 'y', 0)">Reset</button>
             </div>
-            <button onclick="resetCustomPositions()">Reset all positions</button>
+            <div class="control-group">
+                <h4>Upload custom hats</h4>
+                <button onclick="uploadHat('head')">Head hat</button>
+                <button onclick="uploadHat('belly')">Belly hat</button>
+                <button onclick="uploadHat('mouth')">Mouth hat</button>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            </div>
+            <div>
+                <button onclick="resetCustomAdjustments()">Reset settings</button>
+            </div>
         </div>
 
     </div>

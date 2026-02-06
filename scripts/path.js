@@ -1,9 +1,14 @@
 export const api = "https://hundeparken.net/api/items";
 
-export const getHatImage = (imageNo) =>
-	parseInt(imageNo) >= 0
+export function getHatImage(imageNo) {
+	if (imageNo in window.customHats) {
+		return window.customHats[imageNo];
+	}
+
+	return parseInt(imageNo) >= 0
 		? `https://hundeparken.net/h5/game/gfx/item/${imageNo}.png`
 		: `./images/self_images/${imageNo}.png`;
+}
 
 const backgroundImgs = [
 	"base.png",
@@ -20,8 +25,6 @@ const backgroundImgs = [
 ];
 
 export const getBackgroundImage = (count) => {
-	const index =
-		((count % backgroundImgs.length) + backgroundImgs.length) %
-		backgroundImgs.length;
+	const index = ((count % backgroundImgs.length) + backgroundImgs.length) % backgroundImgs.length;
 	return `images/backgrounds/${backgroundImgs[index]}`;
 };

@@ -1,4 +1,5 @@
 import * as animation from "./animation.js";
+import * as cc from "./cc.js";
 import * as constant from "./constant.js";
 import * as id from "./id.js";
 import * as list from "./list.js";
@@ -173,9 +174,72 @@ export function updateCustomPosition(placement, axis, value) {
 	}
 }
 
-export function resetCustomPositions() {
+export function resetCustomAdjustments() {
+	resetCustomPositions();
+	resetPriorities();
+}
+
+function resetCustomPositions() {
 	for (let placement in window.currentHats) {
 		updateCustomPosition(placement, "x", 0);
 		updateCustomPosition(placement, "y", 0);
 	}
+}
+
+function resetPriorities() {
+	for (const placement in window.hatPriority) {
+		window.hatPriority[placement] = 0;
+	}
+}
+
+export function uploadHat(placement) {
+	const fileInput = document.getElementById(id.fileInput);
+	fileInput.dataset.placement = placement;
+	fileInput.click();
+}
+
+export function uploadHatListener() {
+	const fileInput = document.getElementById(id.fileInput);
+	const file = fileInput.files[0];
+	if (!file || !fileInput.dataset.placement) {
+		return;
+	}
+
+	const placement = fileInput.dataset.placement;
+	const reader = new FileReader();
+
+	// Add the custom hat to the relevant places
+	reader.onload = () => {
+		const hatId = id.placementToCustomId[placement];
+		window.customHats[hatId] = reader.result;
+
+		const listImage = document.getElementById(`${hatId}-${id.image}`);
+		listImage.src = reader.result;
+
+		window.currentHats[placement] = hatId;
+		changeHatImage(placement);
+
+		handleHatVisibility();
+		const imageList = document.getElementById(id.listContainer);
+		imageList.scrollTop = 0;
+	};
+	reader.readAsDataURL(file);
+}
+
+export function handleHatVisibility() {
+	const listItems = document.querySelectorAll(`.${id.listItemClass}`);
+	listItems.forEach((item) => {
+		const name = item.querySelector(`.${id.itemNameClass}`).dataset.names;
+
+		if (["-1", "-2", "-3"].includes(item.id) && !window.customHats[item.id]) {
+			item.style.display = "none";
+			return;
+		}
+
+		if (name.includes(window.searchQuery) && cc.shouldBeVisible(window.customHatLevel, item)) {
+			item.style.display = "flex";
+		} else {
+			item.style.display = "none";
+		}
+	});
 }

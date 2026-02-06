@@ -48,7 +48,8 @@ export function populateList(data, handleClick, skipObjects, language) {
 		let imageNo = item.g.split(",")[0];
 		image.src = path.getHatImage(imageNo);
 		image.alt = `${item.n} image`;
-		image.className = "item-image";
+		image.className = id.itemImage;
+		image.id = `${item.key}-${id.image}`;
 
 		listItem.appendChild(leftImage);
 		listItem.appendChild(nameSpan);

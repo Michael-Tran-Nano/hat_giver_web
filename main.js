@@ -7,7 +7,6 @@ import * as id from "./scripts/id.js";
 import * as cc from "./scripts/cc.js";
 import * as hatLogic from "./scripts/hatLogic.js";
 
-// Todo: upload own pictures.
 console.log("Person til at gøre hjemmesiden pænere søges");
 
 window.changeAnimal = changeAnimal;
@@ -21,8 +20,10 @@ window.turnOnCc = turnOnCc;
 window.ccToggle = ccToggle;
 window.toggleAdjustment = hatLogic.toggleAdjustment;
 window.updateCustomPosition = hatLogic.updateCustomPosition;
-window.resetCustomPositions = hatLogic.resetCustomPositions;
+window.resetCustomAdjustments = hatLogic.resetCustomAdjustments;
 window.setHatPriority = hatLogic.setHatPriority;
+window.uploadHat = hatLogic.uploadHat;
+window.searchQuery = "";
 
 window.animal = id.dog;
 window.currentHats = createWatchedObject(
@@ -51,12 +52,14 @@ window.offset = {
 	y: 0,
 };
 
-// Custom positions
+// Custom stuff
 window.customPositions = {
 	head: { x: 0, y: 0 },
 	belly: { x: 0, y: 0 },
 	mouth: { x: 0, y: 0 },
 };
+// Add custom hats by id
+window.customHats = {};
 
 window.hatPriority = createWatchedObject(
 	{
@@ -74,7 +77,6 @@ let shadowColor = { r: 178, g: 178, b: 178 };
 
 let backgroundCount = 0;
 let skipObjects = true;
-let searchQuery = "";
 let customShadowColor = false;
 let language = constant.languages.Norsk;
 
@@ -98,47 +100,37 @@ document.addEventListener("DOMContentLoaded", async function () {
 	const hexTextShadow = document.getElementById(id.hexTextShadow);
 	hexTextShadow.addEventListener("input", (event) => changeAnimalColorFromBar(event, id.shadowFur));
 
+	const fileInput = document.getElementById(id.fileInput);
+	fileInput.addEventListener("change", hatLogic.uploadHatListener);
+
 	color.populateBetaDogs(changeToBetaDog);
 	list.addLanguageOptions();
-	handleHatVisibility();
+	hatLogic.handleHatVisibility();
 });
 
 function handleSearch(event) {
-	searchQuery = event.target.value.toLowerCase();
+	window.searchQuery = event.target.value.toLowerCase();
 
 	// A litte surprise
-	if (searchQuery == "unlock objects") {
+	if (window.searchQuery == "unlock objects") {
 		skipObjects = false;
 		list.populateList(window.data, hatLogic.handleClick, skipObjects, language);
-	} else if (searchQuery == "lock objects") {
+	} else if (window.searchQuery == "lock objects") {
 		skipObjects = true;
 		list.populateList(window.data, hatLogic.handleClick, skipObjects, language);
 	}
 
-	handleHatVisibility();
+	hatLogic.handleHatVisibility();
 }
 
 function turnOnCc() {
 	cc.handleTurnOnCc();
-	handleHatVisibility();
+	hatLogic.handleHatVisibility();
 }
 
 function ccToggle() {
 	cc.handleCcToggle();
-	handleHatVisibility();
-}
-
-function handleHatVisibility() {
-	const listItems = document.querySelectorAll(`.${id.listItemClass}`);
-	listItems.forEach((item) => {
-		const name = item.querySelector(`.${id.itemNameClass}`).dataset.names;
-
-		if (name.includes(searchQuery) && cc.shouldBeVisible(window.customHatLevel, item)) {
-			item.style.display = "flex";
-		} else {
-			item.style.display = "none";
-		}
-	});
+	hatLogic.handleHatVisibility();
 }
 
 function resetPosition() {
