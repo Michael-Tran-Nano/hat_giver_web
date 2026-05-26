@@ -45,8 +45,8 @@ function createImages() {
 			img.src = `bingo/tiles/${index + 1}.png`;
 			img.classList.add("draggable");
 
-			let xPos = col * (colSpace + imageLen) + colCorrection[col] + colStart;
-			let yPos = row * (rowSpace + imageLen) + rowCorrection[row] + rowStart;
+			let xPos = col * (colSpace + imageLen) + colCorrection[col] + colStart - 1; // +1 is temp
+			let yPos = row * (rowSpace + imageLen) + rowCorrection[row] + rowStart + 1; // +1 is temp
 			if (index >= sideSplitIndex) {
 				xPos += sideXShift + colCorrection2[col];
 				yPos += sideYShift;
@@ -82,8 +82,7 @@ bingoCanvas.ondrop = (event) => {
 	const y = event.clientY - rect.top - imgObj.img.height / 2;
 
 	const closestSlot = slots.find(
-		(slot) =>
-			Math.abs(slot.x - x) < slotLen / 2 && Math.abs(slot.y - y) < slotLen / 2
+		(slot) => Math.abs(slot.x - x) < slotLen / 2 && Math.abs(slot.y - y) < slotLen / 2
 	);
 
 	if (closestSlot) {
