@@ -33,6 +33,14 @@ export function populateList(data, handleClick, skipObjects, language) {
 		leftImage.alt = `${item.name.en} left image`;
 		leftImage.className = "left-image";
 
+		let tintImage = null;
+		if (item.layers?.some((layer) => layer.isTintable)) {
+			tintImage = document.createElement("img");
+			tintImage.src = "images/tintable.png";
+			tintImage.alt = "tintable icon";
+			tintImage.className = "tintable";
+		}
+
 		// Name
 		const nameSpan = document.createElement("span");
 		nameSpan.className = id.itemNameClass;
@@ -52,6 +60,9 @@ export function populateList(data, handleClick, skipObjects, language) {
 		image.id = `${item.key}-${id.image}`;
 
 		listItem.appendChild(leftImage);
+		if (tintImage) {
+			listItem.appendChild(tintImage);
+		}
 		listItem.appendChild(nameSpan);
 		listItem.appendChild(image);
 		container.appendChild(listItem);
