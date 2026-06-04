@@ -61,6 +61,9 @@ for image_no in sorted_result:
     if save_image_from_url(image_no):
         saves_images.append(image_no)
 
+# Ensure that my own creations are available
+saves_images.extend(["-19", "886"]) # bulldog
+
 with open("data/availableTints.json", "w") as file:
 	json.dump(saves_images, file)
 

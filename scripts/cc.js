@@ -280,6 +280,55 @@ export function addOwnHats(dataRaw) {
 				back: 1,
 			},
 		},
+		{
+			id: -7,
+			name: {
+				dk: "Bulldog tintable",
+				no: "Bulldog tintable",
+				se: "Bulldog tintable",
+				en: "Bulldog tintable",
+			},
+			description: {
+				dk: "A bulldog you can color?!?",
+				no: "A bulldog you can color?!?",
+				se: "A bulldog you can color?!?",
+				en: "A bulldog you can color?!?",
+			},
+			shapePositions: {
+				bear: {
+					x: 0,
+					y: 0,
+				},
+				wolf: {
+					x: 0,
+					y: 0,
+				},
+				cat: {
+					x: 0,
+					y: 0,
+				},
+			},
+			u: "0",
+			g: "886",
+			a: 0,
+			x: -27,
+			y: -10,
+			layers: [
+				{
+					gfx: "886",
+					isTintable: false,
+				},
+				{
+					gfx: "-19",
+					isTintable: true,
+				},
+			],
+			wearLayer: {
+				mouth: 2,
+				hat: 0,
+				back: -1,
+			},
+		},
 		// The rest are only shown when cc is turned on
 		{
 			id: -100,
