@@ -1,6 +1,7 @@
 import * as path from "./path.js";
 import * as id from "./id.js";
 import * as constant from "./constant.js";
+import * as string from "./string.js";
 
 export function populateList(data, handleClick, skipObjects, language) {
 	const container = document.getElementById(id.listContainer);
@@ -10,6 +11,9 @@ export function populateList(data, handleClick, skipObjects, language) {
 		key: key,
 		...data[key],
 	}));
+
+	// If selected before repopulation
+	const preselectedHatIds = Object.values(window.currentHats);
 
 	itemsArray.forEach((item) => {
 		// skip non-hats
@@ -25,6 +29,9 @@ export function populateList(data, handleClick, skipObjects, language) {
 		listItem.className = id.listItemClass;
 		listItem.addEventListener("click", () => handleClick(item.key));
 		listItem.id = item.key;
+		if (preselectedHatIds.includes(item.key)) {
+			listItem.style.backgroundColor = "yellow";
+		}
 
 		// Type icon
 		const placement = getPlacementFromNumber(item.u);
@@ -39,6 +46,7 @@ export function populateList(data, handleClick, skipObjects, language) {
 			tintImage.src = "images/tintable.png";
 			tintImage.alt = "tintable icon";
 			tintImage.className = "tintable";
+			tintImage.title = string.tintable;
 		}
 
 		// Name

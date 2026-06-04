@@ -4,3 +4,7 @@ export const showCc = "Show custom content";
 export const showAllContent = "Show all content";
 export const openAjustment = "Open ajustment panel";
 export const hideAjustment = "Hide ajustment panel";
+export const tintable = "Hat can be tinted";
+export const openTint = "Open tint panel";
+export const closeTint = "Close tint panel";
+export const tintUnavailable = "Not currently available for this hat :(";

@@ -77,3 +77,7 @@ body {
 .control-group input[type="range"] {
     width: 100%;
 }
+
+.tint-hex {
+    width: 10ch;
+}

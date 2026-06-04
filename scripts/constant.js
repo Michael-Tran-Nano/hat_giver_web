@@ -1,5 +1,6 @@
 export const white = { r: 255, g: 255, b: 255 };
 export const shadowWhite = { r: 178, g: 178, b: 178 };
+export const empty = { r: 0, g: 0, b: 0, a: 0 };
 
 export const baseCoorDict = {
 	dog: [141, 71],

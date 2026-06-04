@@ -23,6 +23,9 @@ window.updateCustomPosition = hatLogic.updateCustomPosition;
 window.resetCustomAdjustments = hatLogic.resetCustomAdjustments;
 window.setHatPriority = hatLogic.setHatPriority;
 window.uploadHat = hatLogic.uploadHat;
+window.toggleTintPanel = color.toggleTintPanel;
+window.tintHat = color.tintHat;
+window.removeTint = color.removeTint;
 window.searchQuery = "";
 
 window.animal = id.dog;
@@ -60,6 +63,8 @@ window.customPositions = {
 };
 // Add custom hats by id
 window.customHats = {};
+// Tint colors
+window.tintedSrcs = {};
 
 window.hatPriority = createWatchedObject(
 	{
@@ -84,6 +89,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 	window.data = await setup.getHatData();
 	list.populateList(window.data, hatLogic.handleClick, skipObjects, language);
 	setup.defineImages(window.offset);
+	window.availableTints = await setup.findAvailableTintGraphics();
 
 	const searchBar = document.getElementById(id.searchBar);
 	searchBar.addEventListener("input", handleSearch);
@@ -99,6 +105,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 	);
 	const hexTextShadow = document.getElementById(id.hexTextShadow);
 	hexTextShadow.addEventListener("input", (event) => changeAnimalColorFromBar(event, id.shadowFur));
+
+	for (let placement in window.currentHats) {
+		const tintColorInput = document.getElementById(`${placement}-${id.tintColor}`);
+		const tintHexText = document.getElementById(`${placement}-${id.tintHexText}`);
+
+		tintColorInput.addEventListener("input", (event) =>
+			changeTintColorFromPalette(event, tintHexText)
+		);
+		tintHexText.addEventListener("input", (event) =>
+			changeTintColorFromBar(event, tintHexText, tintColorInput)
+		);
+	}
 
 	const fileInput = document.getElementById(id.fileInput);
 	fileInput.addEventListener("change", hatLogic.uploadHatListener);
@@ -191,6 +209,7 @@ function changeAnimalColorFromPalette(event, mode) {
 	changeAnimalColor();
 	const hexText = document.getElementById(isMain ? id.hexText : id.hexTextShadow);
 	hexText.value = hexColor.toUpperCase();
+	hexText.style.color = "";
 }
 
 function changeAnimalColorFromBar(event, mode) {
@@ -242,6 +261,24 @@ function changeToBetaDog(fur, shadow) {
 	document.getElementById(id.colorWheelShadow).value = shadow;
 	document.getElementById(id.hexTextShadow).value = shadow;
 	changeAnimalColor();
+}
+
+function changeTintColorFromPalette(event, tintHexText) {
+	const hexColor = event.target.value;
+	tintHexText.value = hexColor.toUpperCase();
+	tintHexText.style.color = "";
+}
+
+function changeTintColorFromBar(event, tintHexText, tintColorInput) {
+	const hexColor = event.target.value;
+	const rgbValue = color.hexToRgb(hexColor);
+
+	if (rgbValue !== null) {
+		tintColorInput.value = color.rgbToHex(rgbValue);
+		tintHexText.style.color = "";
+	} else {
+		tintHexText.style.color = "red";
+	}
 }
 
 function changeBackground(change) {

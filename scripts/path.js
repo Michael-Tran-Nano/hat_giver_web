@@ -5,9 +5,29 @@ export function getHatImage(imageNo) {
 		return window.customHats[imageNo];
 	}
 
+	if (imageNo in window.tintedSrcs) {
+		return window.tintedSrcs[imageNo];
+	}
+
 	return parseInt(imageNo) >= 0
 		? `https://hundeparken.net/h5/game/gfx/item/${imageNo}.png`
 		: `./images/self_images/${imageNo}.png`;
+}
+
+export function getTintGraphic(imageNo) {
+	return `./images/tintGraphics/${imageNo}.png`;
+}
+
+export function loadImage(src) {
+	return new Promise((resolve, reject) => {
+		const img = new Image();
+		img.crossOrigin = "Anonymous";
+
+		img.onload = () => resolve(img);
+		img.onerror = reject;
+
+		img.src = src;
+	});
 }
 
 const backgroundImgs = [

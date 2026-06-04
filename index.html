@@ -62,7 +62,33 @@
             </div>
 
             <div>
+                <button onclick="toggleTintPanel()" hidden id="tint-open">Open tint panel</button>
                 <button onclick="resetPosition()" hidden id="reset-position">Reset position</button>
+            </div>
+
+            <div hidden id="tint-panel">
+                <div hidden id="head-tint">
+                    <label for="head-tint-color">Head tint:</label>
+                    <input type="color" id="head-tint-color" value="#ffffff">
+                    <input type="text" id="head-tint-hex-text" class="tint-hex" placeholder="Tint hex">
+                    <button id="head-tint-button" onclick="tintHat('head')">Tint</button>
+                    <button onclick="removeTint('head')">Reset</button>
+                </div>
+                <div hidden id="belly-tint">
+                    <label for="belly-tint-color">Belly tint:</label>
+                    <input type="color" id="belly-tint-color" value="#ffffff">
+                    <input type="text" id="belly-tint-hex-text" class="tint-hex" placeholder="Tint hex">
+                    <button id="belly-tint-button" onclick="tintHat('belly')">Tint</button>
+                    <button onclick="removeTint('belly')">Reset</button>
+
+                </div>
+                <div hidden id="mouth-tint">
+                    <label for="mouth-tint-color">Mouth tint:</label>
+                    <input type="color" id="mouth-tint-color" value="#ffffff">
+                    <input type="text" id="mouth-tint-hex-text" class="tint-hex" placeholder="Tint hex">
+                    <button id="mouth-tint-button" onclick="tintHat('mouth')">Tint</button>
+                    <button onclick="removeTint('mouth')">Reset</button>
+                </div>
             </div>
 
             <div id="list-container"></div>

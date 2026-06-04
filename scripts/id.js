@@ -30,6 +30,10 @@ export const toggleCc = "toggle-cc";
 export const language = "hat-language";
 export const adjustmentButton = "adjustment-button";
 export const positionPanel = "position-panel";
+export const tintOpenButton = "tint-open";
+export const tintPanel = "tint-panel";
+export const tintColor = "tint-color";
+export const tintHexText = "tint-hex-text";
 
 // Other
 export const listContainer = "list-container";

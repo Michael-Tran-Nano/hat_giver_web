@@ -48,3 +48,8 @@ export function defineImages(offset) {
 
 	draggable.makeDragAble(offset);
 }
+
+export async function findAvailableTintGraphics() {
+	const files = await fetch("../data/availableTints.json").then((r) => r.json());
+	return new Set(files);
+}

@@ -5,6 +5,7 @@ import * as id from "./id.js";
 import * as list from "./list.js";
 import * as path from "./path.js";
 import * as string from "./string.js";
+import * as color from "./color.js";
 
 export function handleClick(hat_id) {
 	const hat = window.data[hat_id];
@@ -16,6 +17,7 @@ export function handleClick(hat_id) {
 		window.currentHats[placement] = hat_id;
 	}
 
+	color.updateTinkAbility(placement);
 	changeHatImage(placement);
 }
 
@@ -35,6 +37,7 @@ export function clearHat(placement) {
 	if (hat_id != 0) {
 		window.currentHats[placement] = 0;
 		changeHatImage(placement);
+		color.updateTinkAbility(placement);
 	}
 }
 
