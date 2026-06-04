@@ -221,7 +221,7 @@ function tintImageDataArray(nonTintDataArray, tintDataArray, tintColor) {
 
 function tintPixel(tintedPixel, tintArray) {
 	for (let i = 0; i < 3; i++) {
-		tintedPixel[i] = Math.ceil((tintArray[i] / 255) * tintedPixel[i]);
+		tintedPixel[i] = Math.round((tintArray[i] / 255) * tintedPixel[i]);
 	}
 }
 
