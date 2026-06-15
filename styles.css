@@ -81,3 +81,29 @@ body {
 .tint-hex {
     width: 10ch;
 }
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    border-bottom: 1px dotted black;
+    cursor: pointer;
+  }
+
+.tooltiptext {
+    visibility: hidden;
+    width: 300px;
+    top: 100%;
+    left: 0%;
+    background-color: black;
+    color: #fff;
+    border-radius: 6px;
+    padding: 5px 5px;
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
