@@ -130,17 +130,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 function handleSearch(event) {
 	window.searchQuery = event.target.value.toLowerCase();
 
-	// A litte surprise
 	if (window.searchQuery == "unlock objects") {
 		skipObjects = false;
 		list.populateList(window.data, hatLogic.handleClick, skipObjects, language);
+		hatLogic.clearSearchBar();
 	} else if (window.searchQuery == "lock objects") {
 		skipObjects = true;
 		list.populateList(window.data, hatLogic.handleClick, skipObjects, language);
+		hatLogic.clearSearchBar();
 	} else if (window.searchQuery == "show only tintables") {
 		window.showOnlyTintables = true;
+		hatLogic.clearSearchBar();
 	} else if (window.searchQuery == "reset tintables") {
 		window.showOnlyTintables = false;
+		hatLogic.clearSearchBar();
 	}
 
 	hatLogic.handleHatVisibility();

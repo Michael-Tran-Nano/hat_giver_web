@@ -253,3 +253,8 @@ export function handleHatVisibility() {
 		}
 	});
 }
+
+export function clearSearchBar() {
+	document.getElementById(id.searchBar).value = "";
+	window.searchQuery = "";
+}
