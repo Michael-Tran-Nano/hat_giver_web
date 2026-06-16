@@ -4,6 +4,9 @@
     height: 176px;
     border: 1px solid #ccc;
 }
+#search-bar {
+    width: 150px;
+}
 .stacked-image {
     position: absolute;
 }

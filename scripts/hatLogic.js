@@ -232,9 +232,16 @@ export function uploadHatListener() {
 export function handleHatVisibility() {
 	const listItems = document.querySelectorAll(`.${id.listItemClass}`);
 	listItems.forEach((item) => {
-		const name = item.querySelector(`.${id.itemNameClass}`).dataset.names;
+		const nameSpan = item.querySelector(`.${id.itemNameClass}`);
+		const name = nameSpan.dataset.names;
+		const tintable = nameSpan.dataset.tintable;
 
 		if (["-1", "-2", "-3"].includes(item.id) && !window.customHats[item.id]) {
+			item.style.display = "none";
+			return;
+		}
+
+		if (window.showOnlyTintables && !tintable) {
 			item.style.display = "none";
 			return;
 		}

@@ -40,6 +40,7 @@ window.currentHats = createWatchedObject(
 	}
 );
 window.customHatLevel = 0; // 0: No custom hats, 1: All hats, 2: Only custom hats
+window.showOnlyTintables = false;
 window.adjustmentPanelShown = false;
 
 // Set positions (without custom changes)
@@ -136,6 +137,10 @@ function handleSearch(event) {
 	} else if (window.searchQuery == "lock objects") {
 		skipObjects = true;
 		list.populateList(window.data, hatLogic.handleClick, skipObjects, language);
+	} else if (window.searchQuery == "show only tintables") {
+		window.showOnlyTintables = true;
+	} else if (window.searchQuery == "reset tintables") {
+		window.showOnlyTintables = false;
 	}
 
 	hatLogic.handleHatVisibility();

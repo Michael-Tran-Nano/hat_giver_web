@@ -40,15 +40,6 @@ export function populateList(data, handleClick, skipObjects, language) {
 		leftImage.alt = `${item.name.en} left image`;
 		leftImage.className = "left-image";
 
-		let tintImage = null;
-		if (item.layers?.some((layer) => layer.isTintable)) {
-			tintImage = document.createElement("img");
-			tintImage.src = "images/tintable.png";
-			tintImage.alt = "tintable icon";
-			tintImage.className = "tintable";
-			tintImage.title = string.tintable;
-		}
-
 		// Name
 		const nameSpan = document.createElement("span");
 		nameSpan.className = id.itemNameClass;
@@ -58,6 +49,16 @@ export function populateList(data, handleClick, skipObjects, language) {
 		nameSpan.dataset.no = `${item.name.no.trim()}${constant.seperator}${item.description.no}`;
 		nameSpan.dataset.se = `${item.name.se.trim()}${constant.seperator}${item.description.se}`;
 		nameSpan.dataset.en = `${item.name.en.trim()}${constant.seperator}${item.description.en}`;
+
+		let tintImage = null;
+		if (item.layers?.some((layer) => layer.isTintable)) {
+			tintImage = document.createElement("img");
+			tintImage.src = "images/tintable.png";
+			tintImage.alt = "tintable icon";
+			tintImage.className = "tintable";
+			tintImage.title = string.tintable;
+			nameSpan.dataset.tintable = "1";
+		}
 
 		// Image
 		const image = document.createElement("img");
