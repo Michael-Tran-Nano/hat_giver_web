@@ -55,9 +55,9 @@ export function setColor(pixel, color) {
 
 export function getShadow(color) {
 	return {
-		r: Math.max(Math.ceil(color.r * 0.7) - 1, 0),
-		g: Math.max(Math.ceil(color.g * 0.7) - 1, 0),
-		b: Math.max(Math.ceil(color.b * 0.7) - 1, 0),
+		r: Math.floor(color.r * 0.7),
+		g: Math.floor(color.g * 0.7),
+		b: Math.floor(color.b * 0.7),
 	};
 }
 
